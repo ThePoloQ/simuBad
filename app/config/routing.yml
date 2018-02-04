@@ -1,0 +1,19 @@
+app_salle:
+    resource: "@AppBundle/Controller/SalleController.php"
+    type:     annotation
+
+app_groupe:
+    resource: "@AppBundle/Controller/GroupeController.php"
+    type:     annotation
+
+app_joueur:
+    resource: "@AppBundle/Controller/JoueurController.php"
+    type:     annotation
+
+app_type:
+    resource: "@AppBundle/Controller/TypeController.php"
+    type:     annotation
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+        <style>
+        ul {
+        	list-style: none;
+          padding: 0;
+          margin: 0;
+      	}
+      	ul li {
+      		display: inline;
+      	}
+        </style>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+      <div class="container">
+        {% block body %}{% endblock %}
+      </div>
+      <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+      <script src="{{ asset('js/popper.min.js') }}"></script>
+      <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+      {% block javascripts %}{% endblock %}
+    </body>
+</html>

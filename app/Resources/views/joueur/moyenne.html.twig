@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Mettre à jour les moyennes</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Update" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('joueur_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

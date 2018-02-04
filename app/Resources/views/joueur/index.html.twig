@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Joueurs list</h1>
+    <div>{{joueurs|length}} Joueurs</div>
+    <table class="table table-striped table-sm table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>NOM Prénom</th>
+                <th>Simple</th>
+                <th>Double</th>
+                <th>Mixte</th>
+                <th>Licence</th>
+                <th>Date inscription</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for joueur in joueurs %}
+            <tr>
+                <td><a href="{{ path('joueur_show', { 'id': joueur.id }) }}">{{ joueur.id }}</a></td>
+                <td>{{ joueur.nom }}</td>
+                <td>{% if joueur.estSimple == true %}X{% endif %}</td>
+                <td>{% if joueur.estDouble == true %}X{% endif %}</td>
+                <td>{% if joueur.estMixte == true %}X{% endif %}</td>
+                <td>{{ joueur.licence }}</td>
+                <td>{{ joueur.dateInscription|date('d-m-Y') }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('joueur_show', { 'id': joueur.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('joueur_edit', { 'id': joueur.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div>{{joueurs|length}} Joueurs</div>
+
+    <ul>
+        <li>
+            <a href="{{ path('joueur_new') }}">Create a new joueur</a> |
+            <a href="{{ path('joueur_importer') }}">Importer joueurs</a> |
+            <a href="{{ path('joueur_moyenne') }}">Maj moyennes</a>
+        </li>
+    </ul>
+{% endblock %}
