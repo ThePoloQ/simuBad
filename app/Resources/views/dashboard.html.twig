@@ -6,23 +6,47 @@
 <script src="{{ asset('js/jquery.canvasjs.min.js') }}"></script>
 <script type="text/javascript">
 $(function () {
-	$("#chartContainer").CanvasJSChart({
+	$("#chartContainer1").CanvasJSChart({
     title:{
   			text: "Nombre d'inscriptions par jour"
 		},
 		data: [
-		{
-    color: "#4F81BC",
-		type: "column", //change it to column, spline, line, pie, etc
-		dataPoints: {{ data1|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
-	}
-	]
-});
-
+  		{
+      color: "#4F81BC",
+  		type: "column",
+  		dataPoints: {{ data1|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+    	}
+  	]
+  });
+  $("#chartContainer2").CanvasJSChart({
+    title:{
+  			text: "Nombre d'inscriptions par club"
+		},
+		data: [
+  		{
+      color: "#4F81BC",
+  		type: "column",
+  		dataPoints: {{ data2|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+    	}
+  	]
+  });
+  $("#chartContainer3").CanvasJSChart({
+    title:{
+  			text: "Repartition M/F"
+		},
+		data: [
+  		{
+  		type: "doughnut",
+  		dataPoints: {{ data3|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+    	}
+  	]
+  });
 });
 </script>
 {% endblock %}
 
 {% block body %}
-<div id="chartContainer" style="width:100%; height:500px;"></div>
+<div id="chartContainer1" style="width:100%; height:500px;"></div>
+<div id="chartContainer2" style="width:100%; height:500px;"></div>
+<div id="chartContainer3" style="width:50%; height:500px;"></div>
 {% endblock %}
