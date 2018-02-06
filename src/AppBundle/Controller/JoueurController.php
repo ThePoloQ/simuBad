@@ -48,6 +48,7 @@ class JoueurController extends Controller
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
+            'type' => 'Simple',
         ));
     }
 
@@ -65,6 +66,7 @@ class JoueurController extends Controller
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
+            'type' => 'Simple',
         ));
     }
 
@@ -80,7 +82,7 @@ class JoueurController extends Controller
 
         $q = $em->getRepository('AppBundle:Joueur')
         ->createQueryBuilder('j')
-        ->select('CONCAT(j.nom,\' / \',p.nom) as nom_equipe')
+        ->select('CONCAT(j.nom,\' (\', j.classementDouble ,\')\',\' / \',p.nom,\' (\', p.classementDouble ,\')\') as nom_equipe')
         ->addSelect('j.coteDouble + p.coteDouble as moyenne')
         ->addSelect('j.dateInscription as jDateInscription')
         ->addSelect('p.dateInscription as pDateInscription')
@@ -109,7 +111,7 @@ class JoueurController extends Controller
 
         $q = $em->getRepository('AppBundle:Joueur')
         ->createQueryBuilder('j')
-        ->select('CONCAT(j.nom,\' / \',p.nom) as nom_equipe')
+        ->select('CONCAT(j.nom,\' (\', j.classementDouble ,\')\',\' / \',p.nom,\' (\', p.classementDouble ,\')\') as nom_equipe')
         ->addSelect('j.coteDouble + p.coteDouble as moyenne')
         ->addSelect('j.dateInscription as jDateInscription')
         ->addSelect('p.dateInscription as pDateInscription')
@@ -138,7 +140,7 @@ class JoueurController extends Controller
 
         $q = $em->getRepository('AppBundle:Joueur')
         ->createQueryBuilder('j')
-        ->select('CONCAT(j.nom,\' / \',p.nom) as nom_equipe')
+        ->select('CONCAT(j.nom,\' (\', j.classementMixte,\')\',\' / \',p.nom,\' (\', p.classementMixte ,\')\') as nom_equipe')
         ->addSelect('j.coteMixte + p.coteMixte as moyenne')
         ->addSelect('j.dateInscription as jDateInscription')
         ->addSelect('p.dateInscription as pDateInscription')
@@ -164,10 +166,11 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("sexe"=>"M","estDouble"=> true,"partenaireDH" => null));
+        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("sexe"=>"M","estDouble"=> true,"partenaireDH" => null),array("coteDouble"=>"DESC"));
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
+            'type' => 'DH',
         ));
     }
 
@@ -181,10 +184,11 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("sexe"=>"F","estDouble"=> true,"partenaireDD" => null));
+        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("sexe"=>"F","estDouble"=> true,"partenaireDD" => null),array("coteDouble"=>"DESC"));
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
+            'type' => 'DD',
         ));
     }
 
@@ -198,10 +202,11 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("estMixte"=> true,"partenaireMX" => null));
+        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("estMixte"=> true,"partenaireMX" => null),array("coteMixte"=>"DESC"));
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
+            'type' => 'MX',
         ));
     }
 
@@ -248,10 +253,16 @@ class JoueurController extends Controller
                   $part = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => $valeurs[7]));
                   if($part && $valeurs[2] == "M"){
                     $joueur->setPartenaireDH($part);
+                    $joueur->setPartenaireDD(null);
                   }elseif($part && $valeurs[2] == "F"){
                     $joueur->setPartenaireDD($part);
+                    $joueur->setPartenaireDH(null);
                   }
                 }
+              }else{
+                $joueur->setEstDouble(false);
+                $joueur->setPartenaireDD(null);
+                $joueur->setPartenaireDD(null);
               }
               if($valeurs[8]!=""){
                 $joueur->setEstMixte(true);
@@ -261,6 +272,9 @@ class JoueurController extends Controller
                     $joueur->setPartenaireMX($part);
                   }
                 }
+              }else{
+                $joueur->setEstMixte(false);
+                $joueur->setPartenaireMX(null);
               }
 
               $em->persist($joueur);
@@ -305,7 +319,7 @@ class JoueurController extends Controller
           $joueurs = $em->getRepository('AppBundle:Joueur')
           ->createQueryBuilder('j')
           ->select('j.licence as licence')
-          ->setMaxResults(250)
+          ->setMaxResults(350)
           ->getQuery()
           ->getResult();
           $licences = array();
@@ -316,6 +330,7 @@ class JoueurController extends Controller
           $url=$this->getParameter('ffbad_url').'?AuthJson={"Login":"'.$this->getParameter('ffbad_login').'","Password":"'.$this->getParameter('ffbad_password').'"}&QueryJson={"Function":"ws_getrankingallbyarrayoflicencedate","Param":{"Param1":'.json_encode($licences).',"Param2":"'.$sDate.'"}}';
           $output=file_get_contents($url);
           $res = json_decode($output,true);
+          //var_dump($res);die();
           $moyennes = $res["Retour"];
           foreach ($moyennes as $m) {
             $em->createQueryBuilder()
@@ -323,11 +338,19 @@ class JoueurController extends Controller
             ->set('j.coteSimple','?1')
             ->set('j.coteDouble','?2')
             ->set('j.coteMixte','?3')
-            ->where('j.licence = ?4')
+            ->set('j.classementSimple','?4')
+            ->set('j.classementDouble','?5')
+            ->set('j.classementMixte','?6')
+            ->set('j.club','?7')
+            ->where('j.licence = ?8')
             ->setParameter(1, $m['SIMPLE_COTE_FFBAD'])
             ->setParameter(2, $m['DOUBLE_COTE_FFBAD'])
             ->setParameter(3, $m['MIXTE_COTE_FFBAD'])
-            ->setParameter(4, intval($m['PER_LICENCE']))
+            ->setParameter(4, $m['SIMPLE_NOM'])
+            ->setParameter(5, $m['DOUBLE_NOM'])
+            ->setParameter(6, $m['MIXTE_NOM'])
+            ->setParameter(7, $m['INS_SIGLE']."-".$m['INS_NUMERO_DEPT'])
+            ->setParameter(8, intval($m['PER_LICENCE']))
             ->getQuery()
             ->execute();
           }

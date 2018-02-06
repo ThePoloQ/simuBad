@@ -33,6 +33,11 @@ class Joueur
   private $licence;
 
   /**
+   * @ORM\Column(type="string", length=100)
+   */
+  private $club;
+
+  /**
    * @ORM\Column(type="string", length=1)
    */
   private $sexe;
@@ -43,14 +48,29 @@ class Joueur
   private $estSimple;
 
   /**
+   * @ORM\Column(type="string", length=3, nullable=true)
+   */
+  private $classementSimple;
+
+  /**
    * @ORM\Column(type="boolean", nullable=true)
    */
   private $estDouble;
 
   /**
+   * @ORM\Column(type="string", length=3, nullable=true)
+   */
+  private $classementDouble;
+
+  /**
    * @ORM\Column(type="boolean", nullable=true)
    */
   private $estMixte;
+
+  /**
+   * @ORM\Column(type="string", length=3, nullable=true)
+   */
+  private $classementMixte;
 
   /**
    * @ORM\Column(type="date")
@@ -212,6 +232,14 @@ class Joueur
     $this->groupes[] = $groupe;
   }
 
+  public function getClub(){
+		return $this->club;
+	}
+
+	public function setClub($club){
+		$this->club = $club;
+	}
+
   public function getSexe(){
 		return $this->sexe;
 	}
@@ -274,5 +302,29 @@ class Joueur
 
 	public function setEstMixte($mixte){
 		$this->estMixte = $mixte;
+	}
+
+  public function getClassementMixte(){
+		return $this->classementMixte;
+	}
+
+	public function setClassementMixte($cl){
+		$this->classementMixte = $cl;
+	}
+
+  public function getClassementSimple(){
+		return $this->classementSimple;
+	}
+
+	public function setClassementSimple($cl){
+		$this->classementSimple = $cl;
+	}
+
+  public function getClassementDouble(){
+		return $this->classementDouble;
+	}
+
+	public function setClassementDouble($cl){
+		$this->classementDouble = $cl;
 	}
 }

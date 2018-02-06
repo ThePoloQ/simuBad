@@ -10,7 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>NOM Prénom</th>
-                <th>Moyenne Simple</th>
+                <th>Moyenne {{ type }}</th>
                 <th>Licence</th>
                 <th>Date inscription</th>
                 <th>Actions</th>
@@ -21,7 +21,7 @@
             <tr>
                 <td><a href="{{ path('joueur_show', { 'id': joueur.id }) }}">{{ joueur.id }}</a></td>
                 <td>{{ joueur.nom }}</td>
-                <td>{{ joueur.coteSimple }}</td>
+                <td>{% if type == "MX" %}{{ joueur.coteMixte }}{% elseif type == "Simple" %}{{ joueur.coteSimple }}{% else %}{{ joueur.coteDouble }}{% endif %}</td>
                 <td>{{ joueur.licence }}</td>
                 <td>{{ joueur.dateInscription|date('d-m-Y') }}</td>
                 <td>
