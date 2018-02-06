@@ -53,6 +53,57 @@ class DefaultController extends Controller
 
         $res3 = $q3->getResult();
 
+        $q4 = $em->getRepository('AppBundle:Joueur')
+        ->createQueryBuilder('j')
+        ->select("COUNT(1) as nb")
+        ->groupBy("j.estSimple")
+        ->where('j.sexe = \'M\'')
+        ->getQuery();
+
+        $res4 = $q4->getResult();
+        $shs = $res4[0]["nb"];
+
+        $q4_2 = $em->getRepository('AppBundle:Joueur')
+        ->createQueryBuilder('j')
+        ->select("COUNT(1) as nb")
+        ->groupBy("j.estSimple")
+        ->where('j.sexe = \'F\'')
+        ->getQuery();
+
+        $res4_2 = $q4_2->getResult();
+        $sds = $res4_2[0]["nb"];
+
+        $q5 = $em->getRepository('AppBundle:Joueur')
+        ->createQueryBuilder('j')
+        ->select("COUNT(1) as nb")
+        ->groupBy("j.estDouble")
+        ->where('j.sexe = \'F\'')
+        ->andWhere('j.partenaireDD IS NOT NULL')
+        ->getQuery();
+
+        $res5 = $q5->getResult();
+        $dds = $res5[0]["nb"];
+
+        $q6 = $em->getRepository('AppBundle:Joueur')
+        ->createQueryBuilder('j')
+        ->select("COUNT(1) as nb")
+        ->groupBy("j.estDouble")
+        ->where('j.sexe = \'M\'')
+        ->andWhere('j.partenaireDH IS NOT NULL')
+        ->getQuery();
+
+        $res6 = $q6->getResult();
+        $dhs = $res6[0]["nb"];
+
+        $q7 = $em->getRepository('AppBundle:Joueur')
+        ->createQueryBuilder('j')
+        ->select("COUNT(1) as nb")
+        ->groupBy("j.estMixte")
+        ->where('j.partenaireMX IS NOT NULL')
+        ->getQuery();
+
+        $res7 = $q7->getResult();
+        $mxs = $res7[0]["nb"];
 
         $data1 = array();
         foreach ($res1 as $row) {
@@ -70,10 +121,18 @@ class DefaultController extends Controller
           $data3[] = array( "indexLabel" => $row['sexe'], "y" => \intval($row['nb']));
         }
 
+        $data4 = array();
+        $data4[] = array( "indexLabel" => "DH paires", "y" => (\intval($dhs)/2));
+        $data4[] = array( "indexLabel" => "SD", "y" => \intval($sds));
+        $data4[] = array( "indexLabel" => "SH", "y" => \intval($shs));
+        $data4[] = array( "indexLabel" => "DD paires", "y" => (\intval($dds)/2));
+        $data4[] = array( "indexLabel" => "MX paires", "y" => (\intval($mxs)/2));
+
         return $this->render('dashboard.html.twig', array(
             'data1' => $data1,
             'data2' => $data2,
             'data3' => $data3,
+            'data4' => $data4,
         ));
     }
 }

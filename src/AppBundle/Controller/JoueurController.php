@@ -235,14 +235,14 @@ class JoueurController extends Controller
             foreach($rows as $key => $row){
               if ($key == 0) continue;
               $valeurs = str_getcsv($row,";");
-              $joueur = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => $valeurs[1]));
+              $joueur = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => \intval($valeurs[1])));
               if (!$joueur) {
                 $joueur = New Joueur();
-                $joueur->setLicence($valeurs[1]);
+                $joueur->setLicence(\intval($valeurs[1]));
               }
               $joueur->setNom($valeurs[0]);
               $joueur->setSexe($valeurs[2]);
-              $joueur->setDateInscription(\DateTime::createFromFormat('d/m/Y', $valeurs[3]));
+              $joueur->setDateInscription(\DateTime::createFromFormat('n/j/Y', $valeurs[3]));
 
               if($valeurs[4]!="")
                 $joueur->setEstSimple(true);
@@ -250,7 +250,7 @@ class JoueurController extends Controller
               if($valeurs[5]!=""){
                 $joueur->setEstDouble(true);
                 if($valeurs[7]!=""){
-                  $part = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => $valeurs[7]));
+                  $part = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => \intval($valeurs[7])));
                   if($part && $valeurs[2] == "M"){
                     $joueur->setPartenaireDH($part);
                     $joueur->setPartenaireDD(null);
@@ -262,12 +262,12 @@ class JoueurController extends Controller
               }else{
                 $joueur->setEstDouble(false);
                 $joueur->setPartenaireDD(null);
-                $joueur->setPartenaireDD(null);
+                $joueur->setPartenaireDH(null);
               }
               if($valeurs[8]!=""){
                 $joueur->setEstMixte(true);
                 if($valeurs[10]!=""){
-                  $part = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => $valeurs[10]));
+                  $part = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => \intval($valeurs[10])));
                   if($part){
                     $joueur->setPartenaireMX($part);
                   }

@@ -21,7 +21,7 @@
             <tr>
                 <td><a href="{{ path('joueur_show', { 'id': joueur.id }) }}">{{ joueur.id }}</a></td>
                 <td>{{ joueur.nom }}</td>
-                <td>{% if type == "MX" %}{{ joueur.coteMixte }}{% elseif type == "Simple" %}{{ joueur.coteSimple }}{% else %}{{ joueur.coteDouble }}{% endif %}</td>
+                <td>{% if type == "MX" %}{{ joueur.coteMixte }} ({{ joueur.classementMixte }}){% elseif type == "Simple" %}{{ joueur.coteSimple }} ({{ joueur.classementSimple }}){% else %}{{ joueur.coteDouble }} ({{ joueur.classementDouble }}){% endif %}</td>
                 <td>{{ joueur.licence }}</td>
                 <td>{{ joueur.dateInscription|date('d-m-Y') }}</td>
                 <td>
