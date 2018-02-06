@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} | Dashboard{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('js/jquery.canvasjs.min.js') }}"></script>
+<script type="text/javascript">
+$(function () {
+	$("#chartContainer").CanvasJSChart({
+    title:{
+  			text: "Nombre d'inscriptions par jour"
+		},
+		data: [
+		{
+    color: "#4F81BC",
+		type: "column", //change it to column, spline, line, pie, etc
+		dataPoints: {{ data1|json_encode(constant('JSON_PRETTY_PRINT'))|raw }}
+	}
+	]
+});
+
+});
+</script>
+{% endblock %}
+
+{% block body %}
+<div id="chartContainer" style="width:100%; height:500px;"></div>
+{% endblock %}
