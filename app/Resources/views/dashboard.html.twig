@@ -7,6 +7,9 @@
 <script type="text/javascript">
 $(function () {
 	$("#chartContainer1").CanvasJSChart({
+    axisX:{
+     interval: 1,
+    },
     title:{
   			text: "Nombre d'inscriptions par jour"
 		},
@@ -19,6 +22,9 @@ $(function () {
   	]
   });
   $("#chartContainer2").CanvasJSChart({
+    axisX:{
+     interval: 1,
+    },
     title:{
   			text: "Nombre d'inscriptions par club"
 		},

@@ -220,12 +220,33 @@ class JoueurController extends Controller
     {
       $form = $this->createFormBuilder()
               ->add('submitFile', FileType::class, array('label' => 'Importer un fichier'))
+              ->add('maj', ChoiceType::class, array(
+              'label' => "Mettre à jour les moyennes",
+              'choices'  => array(
+                  '' => false,
+                  'Oui' => true,
+              )))
+              ->add('dateformat', ChoiceType::class, array(
+              'label' => "Format des dates",
+              'choices'  => array(
+                  'd/m/Y - ex: 24/01/2018' => 'd/m/Y',
+                  'n/j/Y - ex: 1/30/2018' => 'n/j/Y',
+              )))
+              ->add('delemiter', ChoiceType::class, array(
+              'label' => "Délemiteur",
+              'choices'  => array(
+                  ';' => ';',
+                  ',' => ',',
+              )))
               ->getForm();
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
         $em = $this->getDoctrine()->getManager();
         $file = $form->get('submitFile');
+        $dateFormat = $form->get('dateformat');
+        $doMaj = $form->get('maj');
+        $delemiter= $form->get('delemiter');
         $upFile=$file->getData();
         if(in_array($upFile->getMimeType(),array("text/plain","text/csv"))){
             $rows = str_getcsv(file_get_contents($upFile->getPathname()), "\n");
@@ -234,7 +255,7 @@ class JoueurController extends Controller
             */
             foreach($rows as $key => $row){
               if ($key == 0) continue;
-              $valeurs = str_getcsv($row,";");
+              $valeurs = str_getcsv($row,$delemiter);
               $joueur = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => \intval($valeurs[1])));
               if (!$joueur) {
                 $joueur = New Joueur();
@@ -242,7 +263,7 @@ class JoueurController extends Controller
               }
               $joueur->setNom($valeurs[0]);
               $joueur->setSexe($valeurs[2]);
-              $joueur->setDateInscription(\DateTime::createFromFormat('n/j/Y', $valeurs[3]));
+              $joueur->setDateInscription(\DateTime::createFromFormat($dateFormat, $valeurs[3]));
 
               if($valeurs[4]!="")
                 $joueur->setEstSimple(true);
@@ -282,6 +303,10 @@ class JoueurController extends Controller
             }
         }
 
+        if ($doMaj){
+          $this->doMajMoyennes(new \DateTime('now'));
+        }
+
         return $this->redirectToRoute('joueur_index');
        }
 
@@ -307,53 +332,15 @@ class JoueurController extends Controller
               ->add('maj', ChoiceType::class, array(
               'label' => "Mettre à jour les moyennes",
               'choices'  => array(
-                  '' => null,
-                  'Yes' => true,
+                  '' => false,
+                  'Oui' => true,
               )))
               ->getForm();
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
         if ($form->get('maj')->getData() == true){
-          $em = $this->getDoctrine()->getManager();
-          $joueurs = $em->getRepository('AppBundle:Joueur')
-          ->createQueryBuilder('j')
-          ->select('j.licence as licence')
-          ->setMaxResults(350)
-          ->getQuery()
-          ->getResult();
-          $licences = array();
-          foreach ($joueurs as $j) {
-            $licences[] = sprintf("%'.08d", $j["licence"]);
-          }
-          $sDate = $form->get('date')->getData()->format('Y-m-d');
-          $url=$this->getParameter('ffbad_url').'?AuthJson={"Login":"'.$this->getParameter('ffbad_login').'","Password":"'.$this->getParameter('ffbad_password').'"}&QueryJson={"Function":"ws_getrankingallbyarrayoflicencedate","Param":{"Param1":'.json_encode($licences).',"Param2":"'.$sDate.'"}}';
-          $output=file_get_contents($url);
-          $res = json_decode($output,true);
-          //var_dump($res);die();
-          $moyennes = $res["Retour"];
-          foreach ($moyennes as $m) {
-            $em->createQueryBuilder()
-            ->update('AppBundle:Joueur','j')
-            ->set('j.coteSimple','?1')
-            ->set('j.coteDouble','?2')
-            ->set('j.coteMixte','?3')
-            ->set('j.classementSimple','?4')
-            ->set('j.classementDouble','?5')
-            ->set('j.classementMixte','?6')
-            ->set('j.club','?7')
-            ->where('j.licence = ?8')
-            ->setParameter(1, $m['SIMPLE_COTE_FFBAD'])
-            ->setParameter(2, $m['DOUBLE_COTE_FFBAD'])
-            ->setParameter(3, $m['MIXTE_COTE_FFBAD'])
-            ->setParameter(4, $m['SIMPLE_NOM'])
-            ->setParameter(5, $m['DOUBLE_NOM'])
-            ->setParameter(6, $m['MIXTE_NOM'])
-            ->setParameter(7, $m['INS_SIGLE']."-".$m['INS_NUMERO_DEPT'])
-            ->setParameter(8, intval($m['PER_LICENCE']))
-            ->getQuery()
-            ->execute();
-          }
+          $this->doMajMoyennes($form->get('date')->getData());
           return $this->redirectToRoute('joueur_index');
         };
        }
@@ -361,6 +348,49 @@ class JoueurController extends Controller
       return $this->render('joueur/moyenne.html.twig', array(
           'form' => $form->createView(),
       ));
+    }
+
+    private function doMajMoyennes($date){
+      if (!$date) return;
+      $em = $this->getDoctrine()->getManager();
+      $joueurs = $em->getRepository('AppBundle:Joueur')
+      ->createQueryBuilder('j')
+      ->select('j.licence as licence')
+      ->setMaxResults(350)
+      ->getQuery()
+      ->getResult();
+      $licences = array();
+      foreach ($joueurs as $j) {
+        $licences[] = sprintf("%'.08d", $j["licence"]);
+      }
+      $sDate = $date->format('Y-m-d');
+      $url=$this->getParameter('ffbad_url').'?AuthJson={"Login":"'.$this->getParameter('ffbad_login').'","Password":"'.$this->getParameter('ffbad_password').'"}&QueryJson={"Function":"ws_getrankingallbyarrayoflicencedate","Param":{"Param1":'.json_encode($licences).',"Param2":"'.$sDate.'"}}';
+      $output=file_get_contents($url);
+      $res = json_decode($output,true);
+      //var_dump($res);die();
+      $moyennes = $res["Retour"];
+      foreach ($moyennes as $m) {
+        $em->createQueryBuilder()
+        ->update('AppBundle:Joueur','j')
+        ->set('j.coteSimple','?1')
+        ->set('j.coteDouble','?2')
+        ->set('j.coteMixte','?3')
+        ->set('j.classementSimple','?4')
+        ->set('j.classementDouble','?5')
+        ->set('j.classementMixte','?6')
+        ->set('j.club','?7')
+        ->where('j.licence = ?8')
+        ->setParameter(1, $m['SIMPLE_COTE_FFBAD'])
+        ->setParameter(2, $m['DOUBLE_COTE_FFBAD'])
+        ->setParameter(3, $m['MIXTE_COTE_FFBAD'])
+        ->setParameter(4, $m['SIMPLE_NOM'])
+        ->setParameter(5, $m['DOUBLE_NOM'])
+        ->setParameter(6, $m['MIXTE_NOM'])
+        ->setParameter(7, $m['INS_SIGLE']."-".$m['INS_NUMERO_DEPT'])
+        ->setParameter(8, intval($m['PER_LICENCE']))
+        ->getQuery()
+        ->execute();
+      }
     }
 
     /**
