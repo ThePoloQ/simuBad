@@ -3,28 +3,50 @@
 {% block title %} | Détail du joueur{% endblock %}
 
 {% block body %}
-    <h1>Joueur</h1>
-
-    <table class="table table-striped table-sm table-hover">
+    <div class="jumbotron">
+    <div style="text-align:center"><h2>{{ joueur.nom }}</h2><i>{{ joueur.classementSimple }}/{{ joueur.classementDouble }}/{{ joueur.classementMixte }}</i></div>
+    <table class="table table-sm table-hover" style="margin-top:10px">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ joueur.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ joueur.nom }}</td>
-            </tr>
-            <tr>
-                <th>Prenom</th>
-                <td>{{ joueur.prenom }}</td>
-            </tr>
             <tr>
                 <th>Licence</th>
                 <td>{{ joueur.licence }}</td>
             </tr>
+            <tr>
+                <th>Club</th>
+                <td>{{ joueur.club }}</td>
+            </tr>
+            </tr>
+            <tr>
+                <th>Sexe</th>
+                <td>{{ joueur.sexe }}</td>
+            </tr>
+            <tr>
+                <th>Tableaux</th>
+                <td>
+                {% if joueur.estSimple == true %}Simple<BR/>{% endif %}
+                {% if joueur.estDouble == true %}Double<BR/>{% endif %}
+                {% if joueur.estMixte == true %}Mixte{% endif %}
+                </td>
+            </tr>
+            </tr>
+            {% if joueur.estDouble == true  or joueur.estMixte == true %}
+            <tr>
+                <th>Partenaires</th>
+                <td>
+                {% if joueur.estDouble == true %}
+                  {% if joueur.partenaireDH %}DH: <a href="{{ path('joueur_show', { 'id': joueur.partenaireDH.id }) }}">{{ joueur.partenaireDH }}</a> ({{ joueur.partenaireDH.classementDouble }})<BR/>{% endif %}
+                  {% if joueur.partenaireDD %}DD: <a href="{{ path('joueur_show', { 'id': joueur.partenaireDD.id }) }}">{{ joueur.partenaireDD }}</a> ({{ joueur.partenaireDD.classementDouble }})<BR/>{% endif %}
+                  {% if not joueur.partenaireDH and not joueur.partenaireDD %}Double: Liste d'attente{% endif %}
+                {% endif %}
+                {% if joueur.estMixte == true %}
+                  {% if joueur.partenaireMX %}MX: <a href="{{ path('joueur_show', { 'id': joueur.partenaireMX.id }) }}">{{ joueur.partenaireMX }}</a> ({{ joueur.partenaireMX.classementMixte}})<BR/>{% endif %}
+                {% endif %}
+                </td>
+            </tr>
+            {% endif %}
         </tbody>
     </table>
+    </div>
 
     <ul>
         <li>
