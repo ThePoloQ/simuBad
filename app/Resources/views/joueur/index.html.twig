@@ -8,7 +8,6 @@
     <table class="table table-striped table-sm table-hover">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>NOM Prénom</th>
                 <th>Simple</th>
                 <th>Double</th>
@@ -21,7 +20,6 @@
         <tbody>
         {% for joueur in joueurs %}
             <tr>
-                <td><a href="{{ path('joueur_show', { 'id': joueur.id }) }}">{{ joueur.id }}</a></td>
                 <td>{{ joueur.nom }}</td>
                 <td>{% if joueur.estSimple == true %}{{ joueur.classementSimple }}{% endif %}</td>
                 <td>{% if joueur.estDouble == true %}{{ joueur.classementDouble }}{% endif %}</td>
