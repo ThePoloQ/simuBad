@@ -13,7 +13,7 @@ class GroupeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nom')->add('type')->add('joueurs')->add('salle')->add('salleDF');
+        $builder->add('nom')->add('type')->add('tableau')->add('salle')->add('salleDF');
     }/**
      * {@inheritdoc}
      */

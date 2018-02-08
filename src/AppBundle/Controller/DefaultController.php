@@ -129,10 +129,10 @@ class DefaultController extends Controller
         $data4[] = array( "indexLabel" => "MX paires", "y" => (\intval($mxs)/2));
 
         return $this->render('dashboard.html.twig', array(
-            'data1' => $data1,
-            'data2' => $data2,
-            'data3' => $data3,
-            'data4' => $data4,
+            'data1' => $data1, //inscrits par date
+            'data2' => $data2, //inscrits par club
+            'data3' => $data3, //repartition M/F
+            'data4' => $data4, //repartition Tableaux
         ));
     }
 }

@@ -244,18 +244,33 @@ class JoueurController extends Controller
       if ($form->isSubmitted() && $form->isValid()) {
         $em = $this->getDoctrine()->getManager();
         $file = $form->get('submitFile');
-        $dateFormat = $form->get('dateformat');
-        $doMaj = $form->get('maj');
-        $delemiter= $form->get('delemiter');
+        $dateFormat = $form->get('dateformat')->getData();
+        $doMaj = $form->get('maj')->getData();
+        $delemiter= $form->get('delemiter')->getData();
         $upFile=$file->getData();
         if(in_array($upFile->getMimeType(),array("text/plain","text/csv"))){
             $rows = str_getcsv(file_get_contents($upFile->getPathname()), "\n");
-            /*
-            *  Nom_0;Licence_1;Sexe_2;Date_3;Simple_4;Double_5;Doubl_6;L_7;Mixte_8;Mixte_9;L_10
-            */
             foreach($rows as $key => $row){
-              if ($key == 0) continue;
               $valeurs = str_getcsv($row,$delemiter);
+              if ($key == 0) {
+                //Nom,L,Sexe,Date,Simple,Double,Partenaire double,L,Mixte,Partenaire mixte,L
+                //verification de l entete pour valider le fichier
+                if ( $valeurs[0]!="Nom" ||
+                     $valeurs[1]!="L" ||
+                     $valeurs[2]!="Sexe" ||
+                     $valeurs[3]!="Date" ||
+                     $valeurs[4]!="Simple" ||
+                     $valeurs[5]!="Double" ||
+                     $valeurs[6]!="Partenaire double" ||
+                     $valeurs[7]!="L" ||
+                     $valeurs[8]!="Mixte" ||
+                     $valeurs[9]!="Partenaire mixte" ||
+                     $valeurs[10]!="L"){
+                  die("ERROR: Bad File Format - Unable to import file");
+                }else{
+                  continue;
+                }
+              }
               $joueur = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => \intval($valeurs[1])));
               if (!$joueur) {
                 $joueur = New Joueur();

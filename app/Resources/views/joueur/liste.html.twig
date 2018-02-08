@@ -8,7 +8,6 @@
     <table class="table table-striped table-sm table-hover">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>NOM Prénom</th>
                 <th>Moyenne {{ type }}</th>
                 <th>Licence</th>
@@ -19,7 +18,6 @@
         <tbody>
         {% for joueur in joueurs %}
             <tr>
-                <td><a href="{{ path('joueur_show', { 'id': joueur.id }) }}">{{ joueur.id }}</a></td>
                 <td>{{ joueur.nom }}</td>
                 <td>{% if type == "MX" %}{{ joueur.coteMixte }} ({{ joueur.classementMixte }}){% elseif type == "Simple" %}{{ joueur.coteSimple }} ({{ joueur.classementSimple }}){% else %}{{ joueur.coteDouble }} ({{ joueur.classementDouble }}){% endif %}</td>
                 <td>{{ joueur.licence }}</td>

@@ -23,6 +23,12 @@ class Groupe
   private $nom;
 
   /**
+   * @ORM\Column(type="string", length=5, nullable=true)
+   */
+  private $tableau;
+
+
+  /**
    * @ORM\ManyToOne(targetEntity="Type", inversedBy="groupes")
    * @ORM\JoinColumn(name="type_id", referencedColumnName="id")
    */
@@ -63,6 +69,14 @@ class Groupe
 
   public function setNom($nom){
     $this->nom = $nom;
+  }
+
+  public function getTableau(){
+    return $this->tableau;
+  }
+
+  public function setTableau($tableau){
+    $this->tableau = $tableau;
   }
 
   public function getType(){
