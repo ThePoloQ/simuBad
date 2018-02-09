@@ -266,7 +266,10 @@ class JoueurController extends Controller
                      $valeurs[8]!="Mixte" ||
                      $valeurs[9]!="Partenaire mixte" ||
                      $valeurs[10]!="L"){
-                  die("ERROR: Bad File Format - Unable to import file");
+                  return $this->render('joueur/importer.html.twig', array(
+                    'form' => $form->createView(),
+                    'message' => 'ERREUR: Mauvais format de fichier - Import impossible',
+                  ));
                 }else{
                   continue;
                 }
@@ -371,7 +374,7 @@ class JoueurController extends Controller
       $joueurs = $em->getRepository('AppBundle:Joueur')
       ->createQueryBuilder('j')
       ->select('j.licence as licence')
-      ->setMaxResults(350)
+      ->setMaxResults(500)
       ->getQuery()
       ->getResult();
       $licences = array();

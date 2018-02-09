@@ -5,6 +5,9 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\Joueur;
+use AppBundle\Entity\Type;
+use AppBundle\Entity\Salle;
 
 class DefaultController extends Controller
 {
@@ -23,6 +26,20 @@ class DefaultController extends Controller
     public function dashboardAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+
+        $q0 = $em->getRepository('AppBundle:Joueur')
+        ->createQueryBuilder('j')
+        ->select("COUNT(1) as nb")
+        ->getQuery();
+        $res0 = $q0->getResult();
+        $nbj = $res0[0]["nb"];
+
+        if ($nbj < 1){
+          return $this->render('index.html.twig',array(
+            'message' => 'ERREUR - Aucun joueur dans la base'
+          ));
+        }
+
         $q1 = $em->getRepository('AppBundle:Joueur')
         ->createQueryBuilder('j')
         ->select("COUNT(1) as nb")
@@ -134,5 +151,135 @@ class DefaultController extends Controller
             'data3' => $data3, //repartition M/F
             'data4' => $data4, //repartition Tableaux
         ));
+    }
+
+    /**
+     * @Route("/init", name="init")
+     */
+    public function initAction(Request $request)
+    {
+      $em = $this->getDoctrine()->getManager();
+
+      $q0 = $em->getRepository('AppBundle:Type')
+      ->createQueryBuilder('t')
+      ->select("COUNT(1) as nb")
+      ->getQuery();
+      $res0 = $q0->getResult();
+      $nbT = $res0[0]["nb"];
+
+      $q1 = $em->getRepository('AppBundle:Salle')
+      ->createQueryBuilder('s')
+      ->select("COUNT(1) as nb")
+      ->getQuery();
+      $res1 = $q0->getResult();
+      $nbS = $res0[0]["nb"];
+
+      $message = null;
+
+      if ($nbT < 5){
+        $t1= new Type();
+        $t1->setNom("2x3");
+        $t1->setNombrePoules(2);
+        $t1->setTaillePoule(3);
+
+        $t2= new Type();
+        $t2->setNom("2x4");
+        $t2->setNombrePoules(2);
+        $t2->setTaillePoule(4);
+
+        $t3= new Type();
+        $t3->setNom("4x3");
+        $t3->setNombrePoules(4);
+        $t3->setTaillePoule(3);
+
+        $t4= new Type();
+        $t4->setNom("4x4");
+        $t4->setNombrePoules(4);
+        $t4->setTaillePoule(4);
+
+        $t5= new Type();
+        $t5->setNom("8x3");
+        $t5->setNombrePoules(8);
+        $t5->setTaillePoule(3);
+
+        $em->persist($t1);
+        $em->persist($t2);
+        $em->persist($t3);
+        $em->persist($t4);
+        $em->persist($t5);
+
+        $message = "Ajout des Types";
+      }
+
+      if ($nbS < 7){
+        $s1= new Salle();
+        $s1->setNom("Lezennes Samedi Simples");
+        $s1->setNombreTerrains(8);
+        $s1->setHeureDebut(\DateTime::createFromFormat('H:i','08:00'));
+        $s1->setHeureFin(\DateTime::createFromFormat('H:i','17:00'));
+
+        $s1_2= new Salle();
+        $s1_2->setNom("Lezennes Samedi Mixte");
+        $s1_2->setNombreTerrains(8);
+        $s1_2->setHeureDebut(\DateTime::createFromFormat('H:i','18:00'));
+        $s1_2->setHeureFin(\DateTime::createFromFormat('H:i','21:00'));
+
+        $s2= new Salle();
+        $s2->setNom("Lezennes Dimanche");
+        $s2->setNombreTerrains(8);
+        $s2->setHeureDebut(\DateTime::createFromFormat('H:i','08:00'));
+        $s2->setHeureFin(\DateTime::createFromFormat('H:i','17:00'));
+
+        $s2_2= new Salle();
+        $s2_2->setNom("Lezennes Dimanche Phases Finales");
+        $s2_2->setNombreTerrains(8);
+        $s2_2->setHeureDebut(\DateTime::createFromFormat('H:i','17:00'));
+        $s2_2->setHeureFin(\DateTime::createFromFormat('H:i','21:00'));
+
+        $s3= new Salle();
+        $s3->setNom("Hellemmes Samedi Simples");
+        $s3->setNombreTerrains(7);
+        $s3->setHeureDebut(\DateTime::createFromFormat('H:i','08:00'));
+        $s3->setHeureFin(\DateTime::createFromFormat('H:i','17:00'));
+
+        $s3_2= new Salle();
+        $s3_2->setNom("Hellemmes Samedi Mixte");
+        $s3_2->setNombreTerrains(7);
+        $s3_2->setHeureDebut(\DateTime::createFromFormat('H:i','18:00'));
+        $s3_2->setHeureFin(\DateTime::createFromFormat('H:i','21:00'));
+
+        $s4= new Salle();
+        $s4->setNom("Hellemmes Dimanche");
+        $s4->setNombreTerrains(7);
+        $s4->setHeureDebut(\DateTime::createFromFormat('H:i','08:00'));
+        $s4->setHeureFin(\DateTime::createFromFormat('H:i','16:00'));
+
+        $em->persist($s1);
+        $em->persist($s1_2);
+        $em->persist($s2);
+        $em->persist($s2_2);
+        $em->persist($s3);
+        $em->persist($s3_2);
+        $em->persist($s4);
+
+        if (!$message){
+          $message = "Ajout des Salles";
+        }else{
+          $message .= " & Ajout des Salles";
+        }
+
+      }
+
+      if (!$message){
+        $message = 'ERREUR - Types et Salles déjà existants';
+      }else{
+        $message = 'SUCCES - '.$message;
+      }
+
+      $em->flush();
+
+      return $this->render('index.html.twig',array(
+        'message' => $message,
+      ));
     }
 }

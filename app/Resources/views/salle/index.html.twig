@@ -6,22 +6,22 @@
     <table class="table table-striped table-sm table-hover">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom</th>
                 <th>Nombre_terrains</th>
                 <th>Heure_debut</th>
                 <th>Heure_fin</th>
+                <th>Capacite</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for salle in salles %}
             <tr>
-                <td><a href="{{ path('salle_show', { 'id': salle.id }) }}">{{ salle.id }}</a></td>
                 <td>{{ salle.nom }}</td>
                 <td>{{ salle.nombreterrains }}</td>
                 <td>{% if salle.heuredebut %}{{ salle.heuredebut|date('H:i:s') }}{% endif %}</td>
                 <td>{% if salle.heurefin %}{{ salle.heurefin|date('H:i:s') }}{% endif %}</td>
+                <td>{{ salle.getCapacite }}</td>
                 <td>
                     <ul>
                         <li>

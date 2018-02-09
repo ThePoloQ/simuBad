@@ -47,6 +47,9 @@ class Salle
    */
   private $groupesDF;
 
+  //duree d'un match en secondes (30minutes)
+  const DUREEMATCH = 1800;
+
   public function __construct() {
     $this->groupes = new \Doctrine\Common\Collections\ArrayCollection();
     $this->groupesDF = new \Doctrine\Common\Collections\ArrayCollection();
@@ -106,6 +109,13 @@ class Salle
 
   public function addGroupeDF(Groupe $groupeDF){
     $this->groupesDF[] = $groupeDF;
+  }
+
+  public function getCapacite(){
+    $diff = $this->heure_debut->diff($this->heure_fin);
+    $sec = \date_create('@0')->add($diff)->getTimestamp();
+
+    return ($sec/self::DUREEMATCH) * $this->getNombreTerrains();
   }
 
 }

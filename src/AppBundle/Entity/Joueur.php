@@ -198,18 +198,26 @@ class Joueur
     return $this->partenaireDH;
   }
 
-  public function setPartenaireDH($partenaireDH){
+  public function setPartenaireDH($partenaireDH = null){
     $this->partenaireDH = $partenaireDH;
+
+    if (!$partenaireDH && $this->getPartenaireDH())
+      $this->getPartenaireDH()->setPartenaireDH(null);
+
     if ($partenaireDH && (!$partenaireDH->getPartenaireDH() || $partenaireDH->getPartenaireDH()->getId() != $this->getId()))
-        $partenaireDH->setPartenaireDH($this);
+      $partenaireDH->setPartenaireDH($this);
   }
 
   public function getPartenaireDD(){
     return $this->partenaireDD;
   }
 
-  public function setPartenaireDD($partenaireDD){
+  public function setPartenaireDD($partenaireDD = null){
     $this->partenaireDD = $partenaireDD;
+
+    if (!$partenaireDD && $this->getPartenaireDD())
+      $this->getPartenaireDD()->setPartenaireDD(null);
+
     if ($partenaireDD && (!$partenaireDD->getPartenaireDD() || $partenaireDD->getPartenaireDD()->getId() != $this->getId()))
       $partenaireDD->setPartenaireDD($this);
   }
@@ -218,8 +226,13 @@ class Joueur
     return $this->partenaireMX;
   }
 
-  public function setPartenaireMX($partenaireMX){
+  public function setPartenaireMX($partenaireMX = null){
     $this->partenaireMX = $partenaireMX;
+
+    if (!$partenaireMX && $this->getPartenaireMX())
+      $this->getPartenaireMX()->setPartenaireMX(null);
+
+
     if ($partenaireMX && (!$partenaireMX->getPartenaireMX() || $partenaireMX->getPartenaireMX()->getId() != $this->getId()))
       $partenaireMX->setPartenaireMX($this);
   }

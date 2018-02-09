@@ -61,16 +61,24 @@
               <a class="nav-link" href="{{ path('type_index') }}">Types</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ path('groupe_index') }}">Groupes</a>
+              <a class="nav-link" href="{{ path('salle_index') }}">Salles</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ path('salle_index') }}">Salles</a>
+              <a class="nav-link" href="{{ path('groupe_index') }}">Groupes</a>
             </li>
           </ul>
         </div>
       </nav>
 
       <main role="main" class="container">
+      {% if message is defined %}
+        <div class="alert alert-info" role="alert">
+          {{ message }}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      {% endif %}
         {% block body %}{% endblock %}
       </main>
       <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>

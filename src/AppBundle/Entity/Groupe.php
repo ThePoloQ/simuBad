@@ -22,8 +22,9 @@ class Groupe
    */
   private $nom;
 
+  //SH MX DH SD DD
   /**
-   * @ORM\Column(type="string", length=5, nullable=true)
+   * @ORM\Column(type="string", length=2, nullable=true)
    */
   private $tableau;
 
