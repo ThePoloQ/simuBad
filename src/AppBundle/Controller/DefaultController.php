@@ -73,8 +73,8 @@ class DefaultController extends Controller
         $q4 = $em->getRepository('AppBundle:Joueur')
         ->createQueryBuilder('j')
         ->select("COUNT(1) as nb")
-        ->groupBy("j.estSimple")
         ->where('j.sexe = \'M\'')
+        ->andWhere('j.estSimple = 1')
         ->getQuery();
 
         $res4 = $q4->getResult();
@@ -83,8 +83,8 @@ class DefaultController extends Controller
         $q4_2 = $em->getRepository('AppBundle:Joueur')
         ->createQueryBuilder('j')
         ->select("COUNT(1) as nb")
-        ->groupBy("j.estSimple")
         ->where('j.sexe = \'F\'')
+        ->andWhere('j.estSimple = 1')
         ->getQuery();
 
         $res4_2 = $q4_2->getResult();
@@ -93,7 +93,6 @@ class DefaultController extends Controller
         $q5 = $em->getRepository('AppBundle:Joueur')
         ->createQueryBuilder('j')
         ->select("COUNT(1) as nb")
-        ->groupBy("j.estDouble")
         ->where('j.sexe = \'F\'')
         ->andWhere('j.partenaireDD IS NOT NULL')
         ->getQuery();
@@ -104,7 +103,6 @@ class DefaultController extends Controller
         $q6 = $em->getRepository('AppBundle:Joueur')
         ->createQueryBuilder('j')
         ->select("COUNT(1) as nb")
-        ->groupBy("j.estDouble")
         ->where('j.sexe = \'M\'')
         ->andWhere('j.partenaireDH IS NOT NULL')
         ->getQuery();
@@ -115,7 +113,6 @@ class DefaultController extends Controller
         $q7 = $em->getRepository('AppBundle:Joueur')
         ->createQueryBuilder('j')
         ->select("COUNT(1) as nb")
-        ->groupBy("j.estMixte")
         ->where('j.partenaireMX IS NOT NULL')
         ->getQuery();
 
