@@ -48,3 +48,5 @@
 /.web-server-pid
 
 /vendor
+/web/.htpasswd
+/web/.htaccess
