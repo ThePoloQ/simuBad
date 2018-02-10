@@ -1,6 +1,6 @@
 AuthType Basic
 AuthName "Password Protected Area"
-AuthUserFile /appli/projects/badzen/web/.htpasswd
+AuthUserFile /.htpasswd
 Require valid-user
 
 # Use the front controller as index file. It serves as a fallback solution when
