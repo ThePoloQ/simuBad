@@ -58,7 +58,7 @@ class DefaultController extends Controller
           $em = $this->getDoctrine()->getManager();
 
           $user = new User();
-          $user->setUsername("$this->getParameter('bcluser')");
+          $user->setUsername($this->getParameter('bcluser'));
           $password = $passwordEncoder->encodePassword($user, $this->getParameter('bclpassword'));
           $user->setPassword($password);
 
