@@ -44,7 +44,7 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("sexe"=>"M","estSimple"=> true),array("coteSimple"=>"DESC"));
+        $joueurs = $em->getRepository('AppBundle:Joueur')->findSH();
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
@@ -62,7 +62,7 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("sexe"=>"F","estSimple"=> true),array("coteSimple"=>"DESC"));
+        $joueurs = $em->getRepository('AppBundle:Joueur')->findSD();
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
@@ -79,21 +79,7 @@ class JoueurController extends Controller
     public function dhAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $q = $em->getRepository('AppBundle:Joueur')
-        ->createQueryBuilder('j')
-        ->select('CONCAT(j.nom,\' (\', j.classementDouble ,\')\',\' / \',p.nom,\' (\', p.classementDouble ,\')\') as nom_equipe')
-        ->addSelect('j.coteDouble + p.coteDouble as moyenne')
-        ->addSelect('j.dateInscription as jDateInscription')
-        ->addSelect('p.dateInscription as pDateInscription')
-        ->join('j.partenaireDH', 'p')
-        ->where('j.sexe = \'M\'')
-        ->andWhere('j.estDouble = true')
-        ->andWhere('j.id < p.id')
-        ->orderBy('moyenne','DESC')
-        ->getQuery();
-
-        $equipes = $q->getResult();
+        $equipes = $em->getRepository('AppBundle:Joueur')->findDH();
         return $this->render('joueur/equipes.html.twig', array(
             'equipes' => $equipes,
         ));
@@ -108,21 +94,7 @@ class JoueurController extends Controller
     public function ddAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $q = $em->getRepository('AppBundle:Joueur')
-        ->createQueryBuilder('j')
-        ->select('CONCAT(j.nom,\' (\', j.classementDouble ,\')\',\' / \',p.nom,\' (\', p.classementDouble ,\')\') as nom_equipe')
-        ->addSelect('j.coteDouble + p.coteDouble as moyenne')
-        ->addSelect('j.dateInscription as jDateInscription')
-        ->addSelect('p.dateInscription as pDateInscription')
-        ->join('j.partenaireDD', 'p')
-        ->where('j.sexe = \'F\'')
-        ->andWhere('j.estDouble = true')
-        ->andWhere('j.id < p.id')
-        ->orderBy('moyenne','DESC')
-        ->getQuery();
-
-        $equipes = $q->getResult();
+        $equipes = $em->getRepository('AppBundle:Joueur')->findDD();
         return $this->render('joueur/equipes.html.twig', array(
             'equipes' => $equipes,
         ));
@@ -137,20 +109,7 @@ class JoueurController extends Controller
     public function mxAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $q = $em->getRepository('AppBundle:Joueur')
-        ->createQueryBuilder('j')
-        ->select('CONCAT(j.nom,\' (\', j.classementMixte,\')\',\' / \',p.nom,\' (\', p.classementMixte ,\')\') as nom_equipe')
-        ->addSelect('j.coteMixte + p.coteMixte as moyenne')
-        ->addSelect('j.dateInscription as jDateInscription')
-        ->addSelect('p.dateInscription as pDateInscription')
-        ->join('j.partenaireMX', 'p')
-        ->where('j.sexe = \'M\'')
-        ->andWhere('j.estMixte = true')
-        ->orderBy('moyenne','DESC')
-        ->getQuery();
-
-        $equipes = $q->getResult();
+        $equipes = $em->getRepository('AppBundle:Joueur')->findMX();
         return $this->render('joueur/equipes.html.twig', array(
             'equipes' => $equipes,
         ));
@@ -166,7 +125,7 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("sexe"=>"M","estDouble"=> true,"partenaireDH" => null),array("coteDouble"=>"DESC"));
+        $joueurs = $em->getRepository('AppBundle:Joueur')->findLaDH();
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
@@ -184,7 +143,7 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("sexe"=>"F","estDouble"=> true,"partenaireDD" => null),array("coteDouble"=>"DESC"));
+        $joueurs = $em->getRepository('AppBundle:Joueur')->findLaDD();
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
@@ -202,7 +161,7 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $joueurs = $em->getRepository('AppBundle:Joueur')->findBy(array("estMixte"=> true,"partenaireMX" => null),array("coteMixte"=>"DESC"));
+        $joueurs = $em->getRepository('AppBundle:Joueur')->findLaMX();
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
