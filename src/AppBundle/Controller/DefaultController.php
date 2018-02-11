@@ -3,11 +3,14 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Joueur;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\Salle;
+use AppBundle\Entity\User;
 
 class DefaultController extends Controller
 {
@@ -18,6 +21,59 @@ class DefaultController extends Controller
     {
         // replace this example code with whatever you need
         return $this->render('index.html.twig');
+    }
+
+    /**
+     * @Route("/login", name="login")
+     */
+    public function loginAction(Request $request, AuthenticationUtils $authUtils)
+    {
+        // get the login error if there is one
+        $error = $authUtils->getLastAuthenticationError();
+
+        // last username entered by the user
+        $lastUsername = $authUtils->getLastUsername();
+
+        return $this->render('login.html.twig', array(
+            'last_username' => $lastUsername,
+            'error'         => $error,
+        ));
+    }
+
+    /**
+     * @Route("/user/init", name="init_user")
+     */
+    public function initUserAction(Request $request)
+    {
+      $form = $this->createFormBuilder()
+              ->add('password', PasswordType::class, array(
+                'label' => "Mot de Passe",
+                'required' => true,
+              ))
+              ->getForm();
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->get('password')->getData() == $this->getParameter('bclpassword')){
+          $em = $this->getDoctrine()->getManager();
+
+          $user = new User();
+          $user->setUsername("badzen2018");
+          $password = $passwordEncoder->encodePassword($user, $this->getParameter('bclpassword'));
+          $user->setPassword($password);
+
+          $em->persist($user);
+          $em->flush();
+
+          return $this->render('index.html.twig', array(
+              'message' => "Utilisateur créé",
+          ));
+        };
+       }
+
+      return $this->render('user.html.twig', array(
+          'form' => $form->createView(),
+      ));
     }
 
     /**

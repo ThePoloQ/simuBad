@@ -49,4 +49,4 @@
 
 /vendor
 /web/.htpasswd
-/web/.htaccess
+#/web/.htaccess
