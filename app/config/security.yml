@@ -4,28 +4,34 @@ security:
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
-        doctrine:
+        my_provider:
             entity:
                 class: AppBundle:User
                 property: username
-
+    encoders:
+        AppBundle\Entity\User: sha512
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        public:
-            pattern: ^/user/init
-            security: false
-        login:
-            pattern: ^/login
-            security: false
         main:
             logout_on_user_change: true
             pattern:    ^/
+            provider: my_provider
+            anonymous: ~
             form_login:
                 login_path: login
                 check_path: login
-            provider: doctrine
+                default_target_path: homepage
+                always_use_default_target_path: true
+                csrf_parameter:       _csrf_token
+                csrf_token_id:        authenticate
+                csrf_token_generator: security.csrf.token_manager
+            logout:
+                path:   /logout
+                target: /
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/user/init, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_USER }

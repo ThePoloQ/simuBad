@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,9 +42,18 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/logout", name="logout")
+     */
+    public function logoutAction(Request $request)
+    {
+      $container->get('security.context')->setToken(null);
+      $container->get('session')->invalidate();
+    }
+
+    /**
      * @Route("/user/init", name="init_user")
      */
-    public function initUserAction(Request $request)
+    public function initUserAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
       $form = $this->createFormBuilder()
               ->add('password', PasswordType::class, array(
@@ -65,9 +75,7 @@ class DefaultController extends Controller
           $em->persist($user);
           $em->flush();
 
-          return $this->render('index.html.twig', array(
-              'message' => "Utilisateur créé",
-          ));
+          return $this->forward('AppBundle:Default:login');
         };
        }
 

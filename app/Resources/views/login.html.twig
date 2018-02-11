@@ -14,16 +14,26 @@
         <img class="mb-4" src="{{ asset('icon-192x192.png') }}" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Authentification</h1>
         {% if error %}
-            <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+          <div class="alert alert-danger" role="alert">
+            {{ error.messageKey|trans(error.messageData, 'security') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         {% endif %}
         <label for="username" class="sr-only">Utilisateur</label>
         <input type="text" id="username" name="_username" value="{{ last_username }}" class="form-control" placeholder="Utilisateur" required="" autofocus="">
         <label for="password" class="sr-only">Mot de passe</label>
         <input type="password" id="password" name="_password" class="form-control" placeholder="Mot de passe" required="">
-        <button class="btn btn-lg btn-primary btn-block" type="submit">S'Authentifier</button>
+        <input type="hidden" name="_csrf_token"
+            value="{{ csrf_token('authenticate') }}"
+        >
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Authentification</button>
         <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
       </form>
 
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+      <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+      <script src="{{ asset('js/popper.min.js') }}"></script>
+      <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     </body>
 </html>
