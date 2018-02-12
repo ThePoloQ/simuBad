@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,6 +56,17 @@ class DefaultController extends Controller
      */
     public function initUserAction(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+      $em = $this->getDoctrine()->getManager();
+      $user = $em->getRepository('AppBundle:User')
+        ->createQueryBuilder('u')
+        ->where('u.username = :username')
+        ->setParameter('username', $this->getParameter('bcluser'))
+        ->getQuery()
+        ->getOneOrNullResult();
+      if ($user){
+        throw new NotFoundHttpException();
+      }
+
       $form = $this->createFormBuilder()
               ->add('password', PasswordType::class, array(
                 'label' => "Mot de Passe",
