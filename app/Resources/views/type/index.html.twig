@@ -5,19 +5,37 @@
 
     <table class="table table-striped table-sm table-hover">
         <thead>
-            <tr>
+            <tr style="text-align:center">
                 <th>Nom</th>
-                <th>Nombre_poules</th>
-                <th>Taille_poule</th>
+                <th>Poules</th>
+                <th>Taille</th>
+                <th>Joueurs</th>
+                <th>Matchs<br/>/Tour</th>
+                <th>Matchs<br/>Joueur/Tour</th>
+                <th>Tours</th>
+                <th>Matchs<br/>Poules</th>
+                <th>Matchs<br/>Phases Finales</th>
+                <th>Matchs Joueur<br/>/Phases Finales</th>
+                <th>Total<br/>Sans demies</th>
+                <th>Total</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for type in types %}
-            <tr>
+            <tr style="text-align:center">
                 <td>{{ type.nom }}</td>
                 <td>{{ type.nombrepoules }}</td>
                 <td>{{ type.taillepoule }}</td>
+                <td>{{ type.getNbJoueurs() }}</td>
+                <td>{{ type.getNbMatchTour() }}</td>
+                <td>{{ type.getNbMatchsJP() }}</td>
+                <td>{{ type.getNbTours() }}</td>
+                <td>{{ type.getNbMatchsP() }}</td>
+                <td>{{ type.getNbMatchsPhF() }}</td>
+                <td>{{ type.getNbMatchsJPF() }}</td>
+                <td>{{ type.getNbMatchsTSD() }}</td>
+                <td>{{ type.getNbMatchsT() }}</td>
                 <td>
                     <ul>
                         <li>

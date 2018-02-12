@@ -249,7 +249,7 @@ class DefaultController extends Controller
 
       $message = null;
 
-      if ($nbT < 5){
+      if ($nbT < 6){
         $t1= new Type();
         $t1->setNom("2x3");
         $t1->setNombrePoules(2);
@@ -259,6 +259,11 @@ class DefaultController extends Controller
         $t2->setNom("2x4");
         $t2->setNombrePoules(2);
         $t2->setTaillePoule(4);
+
+        $t2_2= new Type();
+        $t2_2->setNom("2x5");
+        $t2_2->setNombrePoules(2);
+        $t2_2->setTaillePoule(5);
 
         $t3= new Type();
         $t3->setNom("4x3");
@@ -277,6 +282,7 @@ class DefaultController extends Controller
 
         $em->persist($t1);
         $em->persist($t2);
+        $em->persist($t2_2);
         $em->persist($t3);
         $em->persist($t4);
         $em->persist($t5);
