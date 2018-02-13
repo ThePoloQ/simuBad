@@ -28,6 +28,14 @@
                 {% if joueur.estMixte == true %}Mixte{% endif %}
                 </td>
             </tr>
+            <tr>
+                <th>Groupes</th>
+                <td>
+                  {% for groupe in joueur.getGroupes() %}
+                    {{groupe.nom}}&nbsp;
+                  {% endfor %}
+                </td>
+            </tr>
             </tr>
             {% if joueur.estDouble == true  or joueur.estMixte == true %}
             <tr>

@@ -3,9 +3,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Groupe;
+use AppBundle\Entity\Joueur;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Groupe controller.
@@ -29,6 +32,119 @@ class GroupeController extends Controller
         return $this->render('groupe/index.html.twig', array(
             'groupes' => $groupes,
         ));
+    }
+
+    /**
+     * Finds and displays a groupe entity.
+     *
+     * @Route("/affecter", name="groupe_affecter")
+     * @Method({"GET", "POST"})
+     */
+    public function affecterAction(Request $request)
+    {
+      $form = $this->createFormBuilder()
+              ->add('tableaux', ChoiceType::class, array(
+              'multiple' => true,
+              'label' => "Choisir les tableaux",
+              'choices'  => array(
+                  'SH' => 'SH',
+                  'SD' => 'SD',
+                  'DH' => 'DH',
+                  'DD' => 'DD',
+                  'MX' => 'MX',
+              )))
+              ->getForm();
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+        $em = $this->getDoctrine()->getManager();
+        $tableaux = $form->get('tableaux')->getData();
+        if ( \in_array("SH",$tableaux)){
+          $groupes = $em->getRepository('AppBundle:Groupe')->findSH();
+          $joueurs = $em->getRepository('AppBundle:Joueur')->findSH();
+
+          $this->doAffectation($groupes,$joueurs);
+        }
+        if ( \in_array("SD",$tableaux)){
+          $groupes = $em->getRepository('AppBundle:Groupe')->findSD();
+          $joueurs = $em->getRepository('AppBundle:Joueur')->findSD();
+
+          $this->doAffectation($groupes,$joueurs);
+        }
+        if ( \in_array("DH",$tableaux)){
+          $groupes = $em->getRepository('AppBundle:Groupe')->findDH();
+          $joueurs = $em->getRepository('AppBundle:Joueur')->findPairesDH();
+
+          $this->doAffectation($groupes,$joueurs,"DH");
+        }
+        if ( \in_array("DD",$tableaux)){
+          $groupes = $em->getRepository('AppBundle:Groupe')->findDD();
+          $joueurs = $em->getRepository('AppBundle:Joueur')->findPairesDD();
+
+          $this->doAffectation($groupes,$joueurs,"DD");
+        }
+        if ( \in_array("MX",$tableaux)){
+          $groupes = $em->getRepository('AppBundle:Groupe')->findMX();
+          $joueurs = $em->getRepository('AppBundle:Joueur')->findPairesMX();
+
+          $this->doAffectation($groupes,$joueurs,"MX");
+        }
+        return $this->redirectToRoute('joueur_index');
+      }
+      return $this->render('groupe/affecter.html.twig', array(
+          'form' => $form->createView(),
+      ));
+    }
+
+    private function doAffectation($groupes=null,$joueurs=null,$tableau=null){
+      if(!$joueurs || !$groupes) return;
+
+      $em = $this->getDoctrine()->getManager();
+      $joueursObj = new \ArrayObject( $joueurs );
+      $iterator = $joueursObj->getIterator();
+
+      foreach ($groupes as $groupe) {
+        $em->persist($groupe);
+        $groupe->removeAllJoueurs();
+      }
+      $em->persist($groupe);
+
+      foreach ($groupes as $groupe) {
+        for ($i=1;$i<=$groupe->getType()->getNbJoueurs();$i++){
+          if (!$iterator->valid()) break;
+          $joueur=$iterator->current();
+
+          switch ($tableau) {
+            case 'DH':
+              $joueur = $joueur[0];
+              $part = $joueur->getPartenaireDH();
+              break;
+            case 'DD':
+              $joueur = $joueur[0];
+              $part = $joueur->getPartenaireDD();
+              break;
+            case 'MX':
+              $joueur = $joueur[0];
+              $part = $joueur->getPartenaireMX();
+              break;
+            default:
+              //do nothing
+              $part = null;
+              break;
+          }
+          $joueur->addGroupe($groupe);
+          $groupe->addJoueur($joueur);
+          if ($part){
+            $part->addGroupe($groupe);
+            $groupe->addJoueur($part);
+            $em->persist($part);
+          }
+          $em->persist($joueur);
+          $iterator->next();
+        }
+        $em->persist($groupe);
+      }
+      $em->flush();
     }
 
     /**

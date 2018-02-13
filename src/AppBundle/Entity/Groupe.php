@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="groupes")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\GroupeRepository")
  */
 class Groupe
 {
@@ -94,6 +95,14 @@ class Groupe
 
   public function addJoueur(Joueur $joueur){
     $this->joueurs[] = $joueur;
+  }
+
+  public function removeJoueur(Joueur $joueur){
+    $this->joueurs->removeElement($joueur);
+  }
+
+  public function removeAllJoueurs(){
+    $this->joueurs->clear();
   }
 
   public function getSalle(){

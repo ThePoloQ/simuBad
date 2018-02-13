@@ -8,17 +8,31 @@
     <table class="table table-striped table-sm table-hover">
         <thead>
             <tr>
+                <th></th>
                 <th>Nom</th>
+                <th>Groupe</th>
                 <th>Moyenne</th>
                 <th>Date Inscription</th>
             </tr>
         </thead>
         <tbody>
-        {% for equipe in equipes %}
+        {% for key,equipe in equipes %}
+          {% set joueur = equipe[0] %}
+          {% set groupe = joueur.getGroupe(equipe.tableau) %}
             <tr>
+                <td>{{ key+1 }}</td>
                 <td>{{ equipe.nom_equipe }}</td>
+                <td>{% if groupe %}{{ groupe.nom }}{% endif %}</td>
                 <td>{{ (equipe.moyenne/2)|number_format(2, '.', '') }}</td>
-                <td>{{ max(equipe.pDateInscription,equipe.jDateInscription)|date('d-m-Y') }}</td>
+                {% if equipe.tableau == 'DH' %}
+                  <td>{{ max(joueur.partenaireDH.DateInscription,joueur.DateInscription)|date('d-m-Y') }}</td>
+                {% endif %}
+                {% if equipe.tableau == 'DD' %}
+                  <td>{{ max(joueur.partenaireDD.DateInscription,joueur.DateInscription)|date('d-m-Y') }}</td>
+                {% endif %}
+                {% if equipe.tableau == 'MX' %}
+                  <td>{{ max(joueur.partenaireMX.DateInscription,joueur.DateInscription)|date('d-m-Y') }}</td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

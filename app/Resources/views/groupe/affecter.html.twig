@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} | Affecter les groupes{% endblock %}
+
+{% block body %}
+    <h1>Affecter les groupes</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <input type="submit" value="Affecter" />
+    {{ form_end(form) }}
+
+    <ul>
+        <li>
+            <a href="{{ path('groupe_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}

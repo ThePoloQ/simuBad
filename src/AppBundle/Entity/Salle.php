@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  * @ORM\Table(name="salles")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\SalleRepository")
  */
 class Salle
 {
@@ -117,5 +118,17 @@ class Salle
 
     return ($sec/self::DUREEMATCH) * $this->getNombreTerrains();
   }
+
+  public function getMatchsProg(){
+    if(strpos($this->getNom(),'Finales') !== false){
+      return count($this->groupesDF) * 3;
+    }
+    $ret = 0;
+    foreach ($this->groupes as $groupe) {
+      $ret += $groupe->getType()->getNbMatchsTSD();
+    }
+    return $ret;
+  }
+
 
 }

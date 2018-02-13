@@ -10,6 +10,8 @@
                 <th>Nombre_terrains</th>
                 <th>Heure_debut</th>
                 <th>Heure_fin</th>
+                <th>Groupes Programmés</th>
+                <th>Match Programmés</th>
                 <th>Capacite</th>
                 <th>Actions</th>
             </tr>
@@ -21,6 +23,8 @@
                 <td>{{ salle.nombreterrains }}</td>
                 <td>{% if salle.heuredebut %}{{ salle.heuredebut|date('H:i:s') }}{% endif %}</td>
                 <td>{% if salle.heurefin %}{{ salle.heurefin|date('H:i:s') }}{% endif %}</td>
+                <td>{% for groupe in salle.getGroupes %}{{ groupe.nom }}&nbsp;{% endfor %}</td>
+                <td>{{ salle.getMatchsProg }}</td>
                 <td>{{ salle.getCapacite }}</td>
                 <td>
                     <ul>

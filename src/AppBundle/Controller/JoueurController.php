@@ -8,7 +8,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Joueur controller.
@@ -48,7 +49,7 @@ class JoueurController extends Controller
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
-            'type' => 'Simple',
+            'type' => 'SH',
         ));
     }
 
@@ -66,7 +67,7 @@ class JoueurController extends Controller
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
-            'type' => 'Simple',
+            'type' => 'SD',
         ));
     }
 
@@ -79,7 +80,7 @@ class JoueurController extends Controller
     public function dhAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $equipes = $em->getRepository('AppBundle:Joueur')->findDH();
+        $equipes = $em->getRepository('AppBundle:Joueur')->findPairesDH();
         return $this->render('joueur/equipes.html.twig', array(
             'equipes' => $equipes,
         ));
@@ -94,7 +95,7 @@ class JoueurController extends Controller
     public function ddAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $equipes = $em->getRepository('AppBundle:Joueur')->findDD();
+        $equipes = $em->getRepository('AppBundle:Joueur')->findPairesDD();
         return $this->render('joueur/equipes.html.twig', array(
             'equipes' => $equipes,
         ));
@@ -109,7 +110,7 @@ class JoueurController extends Controller
     public function mxAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $equipes = $em->getRepository('AppBundle:Joueur')->findMX();
+        $equipes = $em->getRepository('AppBundle:Joueur')->findPairesMX();
         return $this->render('joueur/equipes.html.twig', array(
             'equipes' => $equipes,
         ));

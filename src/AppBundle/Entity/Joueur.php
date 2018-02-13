@@ -242,6 +242,14 @@ class Joueur
     return $this->groupes;
   }
 
+  public function getGroupe($type = 'SH'){
+    foreach ($this->groupes as $key => $groupe) {
+      if ($groupe->getTableau() == "$type")
+        return $groupe;
+    }
+    return null;
+  }
+
   public function addGroupe(Groupe $groupe){
     $this->groupes[] = $groupe;
   }

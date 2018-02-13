@@ -2,20 +2,20 @@
 
 {% block body %}
     <h1>Groupes list</h1>
-
+    <div>{{ groupes|length }} groupes</div>
     <table class="table table-striped table-sm table-hover">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nom</th>
+                <th>Joueurs</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for groupe in groupes %}
             <tr>
-                <td><a href="{{ path('groupe_show', { 'id': groupe.id }) }}">{{ groupe.id }}</a></td>
                 <td>{{ groupe.nom }}</td>
+                <td>{{ groupe.type.nom}} / {{ groupe.type.getNbJoueurs()}}J</td>
                 <td>
                     <ul>
                         <li>
@@ -30,7 +30,7 @@
         {% endfor %}
         </tbody>
     </table>
-
+    <div>{{ groupes|length }} groupes</div>
     <ul>
         <li>
             <a href="{{ path('groupe_new') }}">Create a new groupe</a>
