@@ -13,6 +13,7 @@
                 <th>Double</th>
                 <th>Mixte</th>
                 <th>Licence</th>
+                <th>Club</th>
                 <th>Date inscription</th>
                 <th>Actions</th>
             </tr>
@@ -25,6 +26,7 @@
                 <td>{% if joueur.estDouble == true %}{{ joueur.classementDouble }}{% endif %}</td>
                 <td>{% if joueur.estMixte == true %}{{ joueur.classementMixte }}{% endif %}</td>
                 <td>{{ joueur.licence }}</td>
+                <td>{{ joueur.club }}</td>
                 <td>{{ joueur.dateInscription|date('d-m-Y') }}</td>
                 <td>
                     <ul>
