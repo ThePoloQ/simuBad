@@ -3,10 +3,9 @@
 {% block body %}
     <h1>Configs list</h1>
 
-    <table>
+    <table class="table table-striped table-sm table-hover">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Key</th>
                 <th>Value</th>
                 <th>Actions</th>
@@ -15,7 +14,6 @@
         <tbody>
         {% for config in configs %}
             <tr>
-                <td><a href="{{ path('config_show', { 'id': config.id }) }}">{{ config.id }}</a></td>
                 <td>{{ config.key }}</td>
                 <td>{{ config.value }}</td>
                 <td>

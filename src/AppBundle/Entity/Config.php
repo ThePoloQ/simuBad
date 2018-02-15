@@ -19,12 +19,12 @@ class Config
   private $id;
 
   /**
-   * @ORM\Column(type="string", length=30, unique=true)
+   * @ORM\Column(name="my_key", type="string", length=30, unique=true)
    */
   private $key;
 
   /**
-   * @ORM\Column(type="string", length=30)
+   * @ORM\Column(name="my_value", type="string", length=30)
    */
   private $value;
 

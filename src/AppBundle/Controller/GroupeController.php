@@ -101,12 +101,12 @@ class GroupeController extends Controller
 
       $em = $this->getDoctrine()->getManager();
 
-      $dateLimiteInscription = $em->getRepository('AppBundle:Config')->findOneBy(array('key'=>'date_limite_ins'));
+      $objDateLim = $em->getRepository('AppBundle:Config')->findOneBy(array('key'=>'date_limite_ins'));
 
-      if(!$dateLimiteInscription){
+      if(!$objDateLim){
         $dateLimiteInscription = \date_create('NOW');
       }else{
-        
+        $dateLimiteInscription = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
       }
 
       $joueursObj = new \ArrayObject( $joueurs );
