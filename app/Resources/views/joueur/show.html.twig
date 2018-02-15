@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="jumbotron">
-    <div style="text-align:center"><h2>{{ joueur.nom }}</h2><i>{{ joueur.classementSimple }}/{{ joueur.classementDouble }}/{{ joueur.classementMixte }}</i> - <i>{{ joueur.coteSimple }}/{{ joueur.coteDouble }}/{{ joueur.coteMixte }}</i></div>
+    <div style="text-align:center"><h2>{{ joueur.nom }}{% if joueur.estLA == true %}&nbsp;<span style="background-color:red;color:white;font-weight: bold;">[LA]</span>{% endif %}</h2><i>{{ joueur.classementSimple }}/{{ joueur.classementDouble }}/{{ joueur.classementMixte }}</i> - <i>{{ joueur.coteSimple }}/{{ joueur.coteDouble }}/{{ joueur.coteMixte }}</i></div>
     <table class="table table-sm table-hover" style="margin-top:10px">
         <tbody>
             <tr>

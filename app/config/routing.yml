@@ -1,3 +1,7 @@
+app_config:
+    resource: "@AppBundle/Controller/ConfigController.php"
+    type:     annotation
+
 app_salle:
     resource: "@AppBundle/Controller/SalleController.php"
     type:     annotation

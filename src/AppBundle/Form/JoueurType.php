@@ -18,6 +18,7 @@ class JoueurType extends AbstractType
           ->add('sexe')
           ->add('licence')
           ->add('dateInscription')
+          ->add('estLA')
           ->add('estSimple')
           ->add('estDouble')
           ->add('partenaireDH')

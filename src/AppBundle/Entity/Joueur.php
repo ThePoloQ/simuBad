@@ -44,6 +44,11 @@ class Joueur
   private $sexe;
 
   /**
+   * @ORM\Column(type="boolean", options={"default" : false})
+   */
+  private $estLA;
+
+  /**
    * @ORM\Column(type="boolean", nullable=true)
    */
   private $estSimple;
@@ -324,6 +329,14 @@ class Joueur
 
 	public function setEstMixte($mixte){
 		$this->estMixte = $mixte;
+	}
+
+  public function getEstLA(){
+		return $this->estLA;
+	}
+
+	public function setEstLA($bool){
+		$this->estLA = $bool;
 	}
 
   public function getClassementMixte(){

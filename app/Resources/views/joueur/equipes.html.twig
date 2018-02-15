@@ -19,20 +19,21 @@
         {% for key,equipe in equipes %}
           {% set joueur = equipe[0] %}
           {% set groupe = joueur.getGroupe(equipe.tableau) %}
+          {% if equipe.tableau == 'DH' %}
+            {% set partenaire = joueur.partenaireDH %}
+          {% endif %}
+          {% if equipe.tableau == 'DD' %}
+            {% set partenaire = joueur.partenaireDD %}
+          {% endif %}
+          {% if equipe.tableau == 'MX' %}
+            {% set partenaire = joueur.partenaireMX %}
+          {% endif %}
             <tr>
                 <td>{{ key+1 }}</td>
-                <td>{{ equipe.nom_equipe }}</td>
+                <td>{% if joueur.estLA == true or partenaire.estLA %}<span style="background-color:red;color:white;font-weight: bold;">[LA]</span>&nbsp;{% endif %}{{ equipe.nom_equipe }}</td>
                 <td>{% if groupe %}{{ groupe.nom }}{% endif %}</td>
                 <td>{{ (equipe.moyenne/2)|number_format(2, '.', '') }}</td>
-                {% if equipe.tableau == 'DH' %}
-                  <td>{{ max(joueur.partenaireDH.DateInscription,joueur.DateInscription)|date('d-m-Y') }}</td>
-                {% endif %}
-                {% if equipe.tableau == 'DD' %}
-                  <td>{{ max(joueur.partenaireDD.DateInscription,joueur.DateInscription)|date('d-m-Y') }}</td>
-                {% endif %}
-                {% if equipe.tableau == 'MX' %}
-                  <td>{{ max(joueur.partenaireMX.DateInscription,joueur.DateInscription)|date('d-m-Y') }}</td>
-                {% endif %}
+                <td>{{ max(partenaire.DateInscription,joueur.DateInscription)|date('d-m-Y') }}</td>
             </tr>
         {% endfor %}
         </tbody>

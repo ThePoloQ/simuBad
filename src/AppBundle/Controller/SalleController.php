@@ -26,8 +26,15 @@ class SalleController extends Controller
 
         $salles = $em->getRepository('AppBundle:Salle')->findAll();
 
+        $dureeMatch = $em->getRepository('AppBundle:Config')->findOneBy(array('key'=>'duree_match_s'));
+
+        if (!$dureeMatch){
+          $dureeMatch = $this->getParameter('duree_match_s');
+        }
+
         return $this->render('salle/index.html.twig', array(
             'salles' => $salles,
+            'duree_match' => $dureeMatch,
         ));
     }
 

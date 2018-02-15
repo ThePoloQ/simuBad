@@ -100,6 +100,15 @@ class GroupeController extends Controller
       if(!$joueurs || !$groupes) return;
 
       $em = $this->getDoctrine()->getManager();
+
+      $dateLimiteInscription = $em->getRepository('AppBundle:Config')->findOneBy(array('key'=>'date_limite_ins'));
+
+      if(!$dateLimiteInscription){
+        $dateLimiteInscription = \date_create('NOW');
+      }else{
+        
+      }
+
       $joueursObj = new \ArrayObject( $joueurs );
       $iterator = $joueursObj->getIterator();
 
@@ -132,6 +141,15 @@ class GroupeController extends Controller
               $part = null;
               break;
           }
+
+          if ( $joueur->getEstLA()
+            || ($part && $part->getEstLA())
+            || $joueur->getDateInscription() > $dateLimiteInscription
+            || ($part && $part->getDateInscription() > $dateLimiteInscription)){
+            $iterator->next();
+            continue;
+          }
+
           $joueur->addGroupe($groupe);
           $groupe->addJoueur($joueur);
           if ($part){
