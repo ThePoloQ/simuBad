@@ -37,7 +37,7 @@
                 <td>{{ type.getNbMatchsJPF() }}</td>
                 <td>{{ type.getNbMatchsTSD() }}</td>
                 <td>{{ type.getNbMatchsT() }}</td>
-                {% set ratio = type.getNbJoueurs()/type.getNbMatchsT() %}
+                {% set ratio = type.getNbMatchsT()/type.getNbJoueurs() %}
                 <td>{{ ratio|number_format(3) }}</td>
                 <td>
                     <ul>
