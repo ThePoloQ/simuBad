@@ -18,6 +18,7 @@
                 <th>Matchs Joueur<br/>/Phases Finales</th>
                 <th>Total<br/>Sans demies</th>
                 <th>Total</th>
+                <th>NbJ/NbM</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -36,6 +37,8 @@
                 <td>{{ type.getNbMatchsJPF() }}</td>
                 <td>{{ type.getNbMatchsTSD() }}</td>
                 <td>{{ type.getNbMatchsT() }}</td>
+                {% set ratio = type.getNbJoueurs()/type.getNbMatchsT() %}
+                <td>{{ ratio|number_format(3) }}</td>
                 <td>
                     <ul>
                         <li>
