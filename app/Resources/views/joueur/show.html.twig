@@ -21,6 +21,10 @@
                 <td>{{ joueur.sexe }}</td>
             </tr>
             <tr>
+                <th>Date d'inscription</th>
+                <td>{{ joueur.dateInscription|date('d-m-Y') }}</td>
+            </tr>
+            <tr>
                 <th>Tableaux</th>
                 <td>
                 {% if joueur.estSimple == true %}Simple<BR/>{% endif %}
