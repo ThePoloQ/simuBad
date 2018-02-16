@@ -4,6 +4,7 @@
         <meta charset="UTF-8" />
         <title>BadZen{% block title %}{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}" />
         <style>
         ul {
         	list-style: none;
@@ -13,6 +14,9 @@
       	ul li {
       		display: inline;
       	}
+        span.badge{
+          color: white;
+        }
         </style>
         {% block stylesheets %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('icon-192x192.png') }}" />
@@ -27,9 +31,6 @@
 
         <div class="collapse navbar-collapse" id="navbarsPrim">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="{{ path('dashboard') }}">Tableau de bord</a>
-            </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Joueurs</a>
               <div class="dropdown-menu" aria-labelledby="dropdown01">
@@ -72,10 +73,13 @@
             </li>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ path('config_index') }}">Configuration</a>
+              <a class="nav-link" href="{{ path('dashboard') }}"><span class="fas fa-chart-line"></span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ path('logout') }}">Sortir</a>
+              <a class="nav-link" href="{{ path('config_index') }}"><span class="fas fa-cogs"></span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ path('logout') }}"><span class="fas fa-sign-out-alt"></span></a>
             </li>
           </ul>
         </div>

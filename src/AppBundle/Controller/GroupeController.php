@@ -101,7 +101,7 @@ class GroupeController extends Controller
 
       $em = $this->getDoctrine()->getManager();
 
-      $objDateLim = $em->getRepository('AppBundle:Config')->findOneBy(array('key'=>'date_limite_ins'));
+      $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
 
       if(!$objDateLim){
         $dateLimiteInscription = \date_create('NOW');

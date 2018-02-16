@@ -26,7 +26,7 @@ class SalleController extends Controller
 
         $salles = $em->getRepository('AppBundle:Salle')->findAll();
 
-        $objDureeMatch = $em->getRepository('AppBundle:Config')->findOneBy(array('key'=>'duree_match_s'));
+        $objDureeMatch = $em->getRepository('AppBundle:Config')->getDureeMatch();
 
         if (!$objDureeMatch){
           $dureeMatch = $this->getParameter('duree_match_s');

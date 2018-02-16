@@ -29,9 +29,17 @@ class JoueurController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $joueurs = $em->getRepository('AppBundle:Joueur')->findAll();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
 
         return $this->render('joueur/index.html.twig', array(
             'joueurs' => $joueurs,
+            'dateLimite' => $dateLimite,
         ));
     }
 
@@ -46,10 +54,18 @@ class JoueurController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $joueurs = $em->getRepository('AppBundle:Joueur')->findSH();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
             'type' => 'SH',
+            'dateLimite' => $dateLimite,
         ));
     }
 
@@ -64,10 +80,18 @@ class JoueurController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $joueurs = $em->getRepository('AppBundle:Joueur')->findSD();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
             'type' => 'SD',
+            'dateLimite' => $dateLimite,
         ));
     }
 
@@ -81,8 +105,17 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $equipes = $em->getRepository('AppBundle:Joueur')->findPairesDH();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
+
         return $this->render('joueur/equipes.html.twig', array(
             'equipes' => $equipes,
+            'dateLimite' => $dateLimite,
         ));
     }
 
@@ -96,8 +129,17 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $equipes = $em->getRepository('AppBundle:Joueur')->findPairesDD();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
+
         return $this->render('joueur/equipes.html.twig', array(
             'equipes' => $equipes,
+            'dateLimite' => $dateLimite,
         ));
     }
 
@@ -111,8 +153,17 @@ class JoueurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $equipes = $em->getRepository('AppBundle:Joueur')->findPairesMX();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
+
         return $this->render('joueur/equipes.html.twig', array(
             'equipes' => $equipes,
+            'dateLimite' => $dateLimite,
         ));
     }
 
@@ -127,10 +178,18 @@ class JoueurController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $joueurs = $em->getRepository('AppBundle:Joueur')->findLaDH();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
             'type' => 'DH',
+            'dateLimite' => $dateLimite,
         ));
     }
 
@@ -145,10 +204,18 @@ class JoueurController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $joueurs = $em->getRepository('AppBundle:Joueur')->findLaDD();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
             'type' => 'DD',
+            'dateLimite' => $dateLimite,
         ));
     }
 
@@ -163,10 +230,18 @@ class JoueurController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $joueurs = $em->getRepository('AppBundle:Joueur')->findLaMX();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
 
         return $this->render('joueur/liste.html.twig', array(
             'joueurs' => $joueurs,
             'type' => 'MX',
+            'dateLimite' => $dateLimite,
         ));
     }
 
@@ -406,10 +481,19 @@ class JoueurController extends Controller
     public function showAction(Joueur $joueur)
     {
         $deleteForm = $this->createDeleteForm($joueur);
+        $em = $this->getDoctrine()->getManager();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
 
         return $this->render('joueur/show.html.twig', array(
             'joueur' => $joueur,
             'delete_form' => $deleteForm->createView(),
+            'dateLimite' => $dateLimite,
         ));
     }
 

@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="jumbotron">
-    <div style="text-align:center"><h2>{{ joueur.nom }}{% if joueur.estLA == true %}&nbsp;<span style="background-color:red;color:white;font-weight: bold;">[LA]</span>{% endif %}</h2><i>{{ joueur.classementSimple }}/{{ joueur.classementDouble }}/{{ joueur.classementMixte }}</i> - <i>{{ joueur.coteSimple }}/{{ joueur.coteDouble }}/{{ joueur.coteMixte }}</i></div>
+    <div style="text-align:center"><h2>{{ joueur.nom }}{% if joueur.estLA == true %}&nbsp;<span class="badge badge-warning">[LA]</span>{% endif %}</h2><i>{{ joueur.classementSimple }}/{{ joueur.classementDouble }}/{{ joueur.classementMixte }}</i> - <i>{{ joueur.coteSimple }}/{{ joueur.coteDouble }}/{{ joueur.coteMixte }}</i></div>
     <table class="table table-sm table-hover" style="margin-top:10px">
         <tbody>
             <tr>
@@ -22,7 +22,7 @@
             </tr>
             <tr>
                 <th>Date d'inscription</th>
-                <td>{{ joueur.dateInscription|date('d-m-Y') }}</td>
+                <td>{{ joueur.dateInscription|date('d-m-Y') }}{% if dateLimite and joueur.dateInscription > dateLimite %}&nbsp;<span class="fas fa-exclamation-circle"></span>{% endif %}</td>
             </tr>
             <tr>
                 <th>Tableaux</th>

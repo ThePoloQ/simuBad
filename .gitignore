@@ -50,3 +50,7 @@
 /vendor
 /web/.htpasswd
 #/web/.htaccess
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
