@@ -25,7 +25,7 @@
                 <td>{% if type == "MX" %}{{ joueur.coteMixte }} ({{ joueur.classementMixte }}){% elseif type == "SH" or type == "SD" %}{{ joueur.coteSimple }} ({{ joueur.classementSimple }}){% else %}{{ joueur.coteDouble }} ({{ joueur.classementDouble }}){% endif %}</td>
                 <td>{{ joueur.licence }}</td>
                 <td>{% if joueur.getGroupe(type)|length > 0 %}{{ joueur.getGroupe(type).nom }}{% endif %}</td>
-                <td>{% if dateLimite and joueur.dateInscription > dateLimite %}<span class="fas fa-exclamation-circle"></span>&nbsp;{% endif %}{{ joueur.dateInscription|date('d-m-Y') }}</td>
+                <td>{% if dateLimite and joueur.dateInscription > dateLimite %}<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Date limite d&eacute;pas&eacute;e"><span class="fas fa-exclamation-circle"></span></span>&nbsp;{% endif %}{{ joueur.dateInscription|date('d-m-Y') }}</td>
                 <td>
                     <ul>
                         <li>

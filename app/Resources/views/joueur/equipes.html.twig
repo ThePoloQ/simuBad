@@ -34,7 +34,7 @@
                 <td>{% if groupe %}{{ groupe.nom }}{% endif %}</td>
                 <td>{{ (equipe.moyenne/2)|number_format(2, '.', '') }}</td>
                 {% set dateInscr = max(partenaire.DateInscription,joueur.DateInscription)%}
-                <td>{% if dateLimite and dateInscr > dateLimite %}<span class="fas fa-exclamation-circle"></span>&nbsp;{% endif %}{{ dateInscr|date('d-m-Y') }}</td>
+                <td>{% if dateLimite and dateInscr > dateLimite %}<span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Date limite d&eacute;pas&eacute;e"><span class="fas fa-exclamation-circle"></span></span>&nbsp;{% endif %}{{ dateInscr|date('d-m-Y') }}</td>
             </tr>
         {% endfor %}
         </tbody>
