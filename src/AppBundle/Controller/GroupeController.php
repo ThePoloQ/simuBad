@@ -101,14 +101,6 @@ class GroupeController extends Controller
 
       $em = $this->getDoctrine()->getManager();
 
-      $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
-
-      if(!$objDateLim){
-        $dateLimiteInscription = \date_create('NOW');
-      }else{
-        $dateLimiteInscription = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
-      }
-
       $joueursObj = new \ArrayObject( $joueurs );
       $iterator = $joueursObj->getIterator();
 
@@ -143,9 +135,7 @@ class GroupeController extends Controller
           }
 
           if ( $joueur->getEstLA()
-            || ($part && $part->getEstLA())
-            || $joueur->getDateInscription() > $dateLimiteInscription
-            || ($part && $part->getDateInscription() > $dateLimiteInscription)){
+            || ($part && $part->getEstLA())){
             $iterator->next();
             continue;
           }

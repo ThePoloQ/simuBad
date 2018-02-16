@@ -403,6 +403,63 @@ class JoueurController extends Controller
       ));
     }
 
+    /**
+     * LA joueur.
+     *
+     * @Route("/listeattente", name="joueur_listeattente")
+     * @Method({"GET", "POST"})
+     */
+    public function listeattenteAction(Request $request)
+    {
+      $form = $this->createFormBuilder()
+              ->add('maj', ChoiceType::class, array(
+              'label' => "Mettre à jour la liste",
+              'choices'  => array(
+                  '' => false,
+                  'Oui' => true,
+              )))
+              ->getForm();
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->get('maj')->getData() == true){
+          $em = $this->getDoctrine()->getManager();
+
+          $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+          if($objDateLim){
+            $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+          }else{
+            $dateLimite = new \DateTime();
+          }
+
+          $em->getRepository('AppBundle:Joueur')
+          ->createQueryBuilder('j')
+          ->update('AppBundle:Joueur', 'j')
+          ->set('j.estLA', 'true')
+          ->where('j.dateInscription > ?1')
+          ->setParameter("1", $dateLimite)
+          ->getQuery()
+          ->getResult();
+
+          $em->getRepository('AppBundle:Joueur')
+          ->createQueryBuilder('j')
+          ->update('AppBundle:Joueur', 'j')
+          ->set('j.estLA', 'false')
+          ->where('j.dateInscription <= ?1')
+          ->setParameter("1", $dateLimite)
+          ->getQuery()
+          ->getResult();
+
+          return $this->redirectToRoute('joueur_index');
+        };
+       }
+
+      return $this->render('joueur/listeattente.html.twig', array(
+          'form' => $form->createView(),
+      ));
+    }
+
     private function doMajMoyennes($date){
       if (!$date) return;
       $em = $this->getDoctrine()->getManager();
