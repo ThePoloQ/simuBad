@@ -12,10 +12,11 @@
             </tr>
         </thead>
         <tbody>
-        {% for groupe in groupes %}
+        {% for key,groupe in groupes %}
             <tr>
                 <td>{{ groupe.nom }}</td>
                 <td>{{ groupe.type.nom}} / {{ groupe.type.getNbJoueurs()}}J</td>
+                <td>{{ nbjoueurs[key].nb }}</td>
                 <td>
                     <ul>
                         <li>

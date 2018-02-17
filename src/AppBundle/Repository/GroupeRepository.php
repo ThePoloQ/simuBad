@@ -36,7 +36,6 @@ class GroupeRepository extends EntityRepository
         return $this->createQueryBuilder('g')
         ->select('g')
         ->addSelect('t')
-        ->addSelect('g')
         ->join('g.type','t')
         ->orderBy('g.nom','ASC')
         ->getQuery()

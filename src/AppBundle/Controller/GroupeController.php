@@ -29,8 +29,17 @@ class GroupeController extends Controller
 
         $groupes = $em->getRepository('AppBundle:Groupe')->findAll();
 
+        $nbjoueurs = $em->getRepository('AppBundle:Joueur')->createQueryBuilder('j')
+        ->select('count(j) as nb')
+        ->join('j.groupes','g')
+        ->orderBy('g.nom','ASC')
+        ->groupBy("g.id")
+        ->getQuery()
+        ->getResult();
+
         return $this->render('groupe/index.html.twig', array(
             'groupes' => $groupes,
+            'nbjoueurs' => $nbjoueurs,
         ));
     }
 
