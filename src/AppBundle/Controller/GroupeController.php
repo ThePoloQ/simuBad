@@ -111,7 +111,8 @@ class GroupeController extends Controller
       $em->persist($groupe);
 
       foreach ($groupes as $groupe) {
-        for ($i=1;$i<=$groupe->getType()->getNbJoueurs();$i++){
+        $i=1;
+        while ($i <= $groupe->getType()->getNbJoueurs()) {
           if (!$iterator->valid()) break;
           $joueur=$iterator->current();
 
@@ -149,7 +150,9 @@ class GroupeController extends Controller
           }
           $em->persist($joueur);
           $iterator->next();
+          $i++;
         }
+
         $em->persist($groupe);
       }
       $em->flush();
