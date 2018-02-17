@@ -610,6 +610,22 @@ class JoueurController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $partDD = $joueur->getPartenaireDD();
+            if ($partDD){
+              $partDD->setPartenaireDD(null);
+              $em->persist($partDD);
+            }
+            $em = $this->getDoctrine()->getManager();
+            $partDH = $joueur->getPartenaireDH();
+            if ($partDH){
+              $partDH->setPartenaireDH(null);
+              $em->persist($partDH);
+            }
+            $partMX = $joueur->getPartenaireMX();
+            if ($partMX){
+              $partMX->setPartenaireMX(null);
+              $em->persist($partMX);
+            }
             $em->remove($joueur);
             $em->flush();
         }
