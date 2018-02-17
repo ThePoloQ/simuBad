@@ -109,7 +109,7 @@ class Groupe
     return $this->salle;
   }
 
-  public function setSalle(Salle $salle){
+  public function setSalle($salle){
     $this->salle = $salle;
   }
 
@@ -117,7 +117,7 @@ class Groupe
     return $this->salleDF;
   }
 
-  public function setSalleDF(Salle $salleDF){
+  public function setSalleDF($salleDF){
     $this->salleDF = $salleDF;
   }
 }
