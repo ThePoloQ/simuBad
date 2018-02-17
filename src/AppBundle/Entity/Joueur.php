@@ -132,7 +132,7 @@ class Joueur
   private $MxId;
 
   /**
-   * @ORM\ManyToMany(targetEntity="Groupe", mappedBy="joueurs")
+   * @ORM\ManyToMany(targetEntity="Groupe", mappedBy="joueurs", cascade={"persist"})
    */
   private $groupes;
 
