@@ -34,8 +34,7 @@ class JoueurRepository extends EntityRepository
     public function findPairesDH()
     {
       return $this->createQueryBuilder('j')
-      ->select('CONCAT(j.nom,\' (\', j.classementDouble ,\')\',\' / \',p.nom,\' (\', p.classementDouble ,\')\') as nom_equipe')
-      ->addSelect('j.coteDouble + p.coteDouble as moyenne')
+      ->select('j.coteDouble + p.coteDouble as moyenne')
       ->addSelect('\'DH\' as tableau')
       ->addSelect('j')
       ->addSelect('p')
@@ -53,8 +52,7 @@ class JoueurRepository extends EntityRepository
     public function findPairesDD()
     {
       return $this->createQueryBuilder('j')
-      ->select('CONCAT(j.nom,\' (\', j.classementDouble ,\')\',\' / \',p.nom,\' (\', p.classementDouble ,\')\') as nom_equipe')
-      ->addSelect('j.coteDouble + p.coteDouble as moyenne')
+      ->select('j.coteDouble + p.coteDouble as moyenne')
       ->addSelect('\'DD\' as tableau')
       ->addSelect('j')
       ->addSelect('p')
@@ -72,8 +70,7 @@ class JoueurRepository extends EntityRepository
     public function findPairesMX()
     {
       return $this->createQueryBuilder('j')
-      ->select('CONCAT(j.nom,\' (\', j.classementMixte,\')\',\' / \',p.nom,\' (\', p.classementMixte ,\')\') as nom_equipe')
-      ->addSelect('j.coteMixte + p.coteMixte as moyenne')
+      ->select('j.coteMixte + p.coteMixte as moyenne')
       ->addSelect('\'MX\' as tableau')
       ->addSelect('j')
       ->addSelect('p')

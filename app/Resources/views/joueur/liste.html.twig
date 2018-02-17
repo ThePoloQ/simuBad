@@ -21,7 +21,7 @@
         {% for key,joueur in joueurs %}
             <tr>
                 <td>{{ key+1 }}</td>
-                <td>{% if joueur.estLA == true %}<span class="badge badge-warning">[LA]</span>&nbsp;{% endif %}{{ joueur.nom }}</td>
+                <td>{% if joueur.estLA == true %}<span class="badge badge-warning">LA</span>&nbsp;{% endif %}{{ joueur.nom }}</td>
                 <td>{% if type == "MX" %}{{ joueur.coteMixte }} ({{ joueur.classementMixte }}){% elseif type == "SH" or type == "SD" %}{{ joueur.coteSimple }} ({{ joueur.classementSimple }}){% else %}{{ joueur.coteDouble }} ({{ joueur.classementDouble }}){% endif %}</td>
                 <td>{{ joueur.licence }}</td>
                 <td>{% if joueur.getGroupe(type)|length > 0 %}{{ joueur.getGroupe(type).nom }}{% endif %}</td>

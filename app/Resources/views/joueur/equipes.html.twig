@@ -36,7 +36,7 @@
           {% endif %}
             <tr>
                 <td>{{ key+1 }}</td>
-                <td>{% if joueur.estLA == true %}<span class="badge badge-warning">[LA]</span>&nbsp;{% endif %}<a href="{{ path('joueur_show', { 'id': joueur.id }) }}">{{joueur.nom}}</a> ({{ joueurClassement }}) / {% if partenaire.estLA == true %}<span class="badge badge-warning">[LA]</span>&nbsp;{% endif %}<a href="{{ path('joueur_show', { 'id': partenaire.id }) }}">{{partenaire.nom}}</a> ({{ partenaireClassement }})</td>
+                <td>{% if joueur.estLA == true %}<span class="badge badge-warning">LA</span>&nbsp;{% endif %}<a href="{{ path('joueur_show', { 'id': joueur.id }) }}">{{joueur.nom}}</a> ({{ joueurClassement }}) / {% if partenaire.estLA == true %}<span class="badge badge-warning">LA</span>&nbsp;{% endif %}<a href="{{ path('joueur_show', { 'id': partenaire.id }) }}">{{partenaire.nom}}</a> ({{ partenaireClassement }})</td>
                 <td>{% if groupe %}{{ groupe.nom }}{% endif %}</td>
                 <td>{{ (equipe.moyenne/2)|number_format(2, '.', '') }}</td>
                 {% set dateInscr = max(partenaire.DateInscription,joueur.DateInscription)%}
