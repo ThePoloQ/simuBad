@@ -246,10 +246,22 @@ class Joueur
   public function getGroupes(){
     return $this->groupes;
   }
+  
 
-  public function setGroupes($groupes){
-    $this->groupes = $groupes;
-    return $this;
+  public function removeGroupe($groupe){
+    if (!$this->groupes->contains($groupe)){
+      return;
+    }
+    $this->groupes->removeElement($groupe);
+    $groupe->removeJoueur($this);
+  }
+
+  public function removeAllGroupes(){
+    if($this->groupes->count()==0) return;
+    $this->groupes->clear();
+    foreach ($$this->groupes as $groupe) {
+      $groupe->removeJoueur($this);
+    }
   }
 
   public function getGroupe($type = 'SH'){
@@ -260,8 +272,12 @@ class Joueur
     return null;
   }
 
-  public function addGroupe(Groupe $groupe){
+  public function addGroupe($groupe){
+    if ($this->groupes->contains($groupe)){
+      return;
+    }
     $this->groupes[] = $groupe;
+    $groupe->addJoueur($this);
   }
 
   public function getClub(){

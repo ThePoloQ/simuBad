@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class JoueurType extends AbstractType
 {
@@ -25,7 +26,7 @@ class JoueurType extends AbstractType
           ->add('partenaireDD')
           ->add('estMixte')
           ->add('partenaireMX')
-          ->add('groupes')
+          ->add('groupes', EntityType::class, array( 'class' => 'AppBundle:Groupe','expanded' => true,'choice_label' => 'nom','multiple' => true,'by_reference' => false,))
           ->add('DhId', HiddenType::class)
           ->add('DdId', HiddenType::class)
           ->add('MxId', HiddenType::class)

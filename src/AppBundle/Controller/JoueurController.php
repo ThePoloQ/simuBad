@@ -570,22 +570,28 @@ class JoueurController extends Controller
             $em = $this->getDoctrine()->getManager();
             if (!$editForm->get('partenaireDH')->getData() && $editForm->get('DhId')->getData()){
               $partDH = $em->getRepository('AppBundle:Joueur')->find($editForm->get('DhId')->getData());
-              $partDH->setDhId(null);
-              $em->persist($partDH);
+              if($partDH){
+                $partDH->setDhId(null);
+                $em->persist($partDH);
+              }
             }
 
             if (!$editForm->get('partenaireDD')->getData() && $editForm->get('DdId')->getData()){
               $partDD = $em->getRepository('AppBundle:Joueur')->find($editForm->get('DdId')->getData());
-              $partDD->setDdId(null);
-              $em->persist($partDD);
+              if($partDD){
+                $partDD->setDdId(null);
+                $em->persist($partDD);
+              }
             }
 
             if (!$editForm->get('partenaireMX')->getData() && $editForm->get('MxId')->getData()){
               $partMX = $em->getRepository('AppBundle:Joueur')->find($editForm->get('MxId')->getData());
-              $partMX->setMxId(null);
-              $em->persist($partMX);
+              if($partMX){
+                $partMX->setMxId(null);
+                $em->persist($partMX);
+              }
             }
-
+            $em->persist($joueur);
             $em->flush();
             return $this->redirectToRoute('joueur_edit', array('id' => $joueur->getId()));
         }

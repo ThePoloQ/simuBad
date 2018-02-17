@@ -37,7 +37,7 @@ class Groupe
   private $type;
 
   /**
-   * @ORM\ManyToMany(targetEntity="Joueur", inversedBy="groupes")
+   * @ORM\ManyToMany(targetEntity="Joueur", inversedBy="groupes", cascade={"persist"})
    */
   private $joueurs;
 
@@ -93,18 +93,25 @@ class Groupe
     return $this->joueurs;
   }
 
-  public function addJoueur(Joueur $joueur){
-    $this->joueurs[] = $joueur;
+  public function addJoueur($joueur){
+    if ($this->joueurs->contains($joueur)) {
+      return;
+    }
+    $this->joueurs->add($joueur);
   }
 
-  public function removeJoueur(Joueur $joueur){
+  public function removeJoueur($joueur){
+    if (!$this->joueurs->contains($joueur)){
+      return;
+    }
     $this->joueurs->removeElement($joueur);
+    $joueur->removeGroupe($this);
   }
 
   public function removeAllJoueurs(){
     $this->joueurs->clear();
   }
-
+  
   public function getSalle(){
     return $this->salle;
   }
