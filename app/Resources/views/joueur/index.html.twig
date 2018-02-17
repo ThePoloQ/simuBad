@@ -21,7 +21,7 @@
         <tbody>
         {% for joueur in joueurs %}
             <tr>
-                <td>{% if joueur.estLA == true %}<span class="badge badge-warning">[LA]</span>&nbsp;{% endif %}{{ joueur.nom }}</td>
+                <td>{% if joueur.estLA == true %}<span class="badge badge-warning">LA</span>&nbsp;{% endif %}{{ joueur.nom }}</td>
                 <td>{% if joueur.estSimple == true %}{{ joueur.classementSimple }}{% endif %}</td>
                 <td>{% if joueur.estDouble == true %}{{ joueur.classementDouble }}{% endif %}</td>
                 <td>{% if joueur.estMixte == true %}{{ joueur.classementMixte }}{% endif %}</td>
