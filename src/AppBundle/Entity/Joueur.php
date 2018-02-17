@@ -44,7 +44,7 @@ class Joueur
   private $sexe;
 
   /**
-   * @ORM\Column(type="boolean", options={"default" : false})
+   * @ORM\Column(type="boolean", nullable=true, options={"default" : false})
    */
   private $estLA;
 
