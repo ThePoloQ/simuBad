@@ -98,6 +98,9 @@ class GroupeController extends Controller
 
           $this->doAffectation($groupes,$joueurs,"MX");
         }
+
+         $this->get('session')->getFlashBag()->add('success', "Groupes affectés");  
+
         return $this->redirectToRoute('joueur_index');
       }
       return $this->render('groupe/affecter.html.twig', array(

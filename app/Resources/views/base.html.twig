@@ -95,6 +95,16 @@
           </button>
         </div>
       {% endif %}
+      {% for label, messages in app.flashes(['success','info','warning', 'error']) %}
+          {% for message in messages %}
+              <div class="alert alert-{{ label }}" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+          {% endfor %}
+      {% endfor %}
         {% block body %}{% endblock %}
       </main>
       <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>

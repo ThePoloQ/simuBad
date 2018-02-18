@@ -360,6 +360,8 @@ class JoueurController extends Controller
           $this->doMajMoyennes(new \DateTime('now'));
         }
 
+        $this->get('session')->getFlashBag()->add('success', "Import des joueurs effectué");
+
         return $this->redirectToRoute('joueur_index');
        }
 
@@ -451,6 +453,8 @@ class JoueurController extends Controller
           ->getQuery()
           ->getResult();
 
+          $this->get('session')->getFlashBag()->add('success', "Liste d'attente construite");
+
           return $this->redirectToRoute('joueur_index');
         };
        }
@@ -501,6 +505,8 @@ class JoueurController extends Controller
         ->getQuery()
         ->execute();
       }
+
+      $this->get('session')->getFlashBag()->add('success', "Mise à jour des moyennes effectuées");
     }
 
     /**
@@ -593,7 +599,10 @@ class JoueurController extends Controller
             }
             $em->persist($joueur);
             $em->flush();
-            return $this->redirectToRoute('joueur_edit', array('id' => $joueur->getId()));
+
+            $this->get('session')->getFlashBag()->add('success', "Mise à jour effectuée");
+
+            return $this->redirectToRoute('joueur_show', array('id' => $joueur->getId()));
         }
 
         return $this->render('joueur/edit.html.twig', array(
@@ -635,6 +644,8 @@ class JoueurController extends Controller
             $em->remove($joueur);
             $em->flush();
         }
+
+        $this->get('session')->getFlashBag()->add('success', "Joueur supprimé");
 
         return $this->redirectToRoute('joueur_index');
     }
