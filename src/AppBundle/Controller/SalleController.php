@@ -57,6 +57,8 @@ class SalleController extends Controller
             $em->persist($salle);
             $em->flush();
 
+            $this->get('session')->getFlashBag()->add('success', "Salle créée");
+
             return $this->redirectToRoute('salle_show', array('id' => $salle->getId()));
         }
 
@@ -97,6 +99,8 @@ class SalleController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->get('session')->getFlashBag()->add('success', "Salle modifiée");
+
             return $this->redirectToRoute('salle_edit', array('id' => $salle->getId()));
         }
 
@@ -121,6 +125,9 @@ class SalleController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($salle);
+
+            $this->get('session')->getFlashBag()->add('success', "Salle supprimée");
+
             $em->flush();
         }
 

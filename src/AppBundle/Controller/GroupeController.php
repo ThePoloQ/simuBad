@@ -179,6 +179,8 @@ class GroupeController extends Controller
             $em->persist($groupe);
             $em->flush();
 
+            $this->get('session')->getFlashBag()->add('success', "Groupe créé");
+
             return $this->redirectToRoute('groupe_show', array('id' => $groupe->getId()));
         }
 
@@ -219,6 +221,8 @@ class GroupeController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
+            $this->get('session')->getFlashBag()->add('success', "Groupe modifié");
+
             return $this->redirectToRoute('groupe_edit', array('id' => $groupe->getId()));
         }
 
@@ -243,6 +247,7 @@ class GroupeController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($groupe);
+            $this->get('session')->getFlashBag()->add('success', "Groupe supprimé");
             $em->flush();
         }
 
