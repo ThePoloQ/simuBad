@@ -27,15 +27,7 @@ class GroupeController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $groupes = $em->getRepository('AppBundle:Groupe')->createQueryBuilder('g')
-        ->select('g')
-        ->addSelect('t')
-        ->addSelect('j')
-        ->join('g.joueurs','j')
-        ->join('g.type','t')
-        ->orderBy('g.nom','ASC')
-        ->getQuery()
-        ->getResult();
+        $groupes = $em->getRepository('AppBundle:Groupe')->findAll();
 
         //echo '<pre>';var_dump(array_keys($res));die();
 

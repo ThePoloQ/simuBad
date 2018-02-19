@@ -36,7 +36,9 @@ class GroupeRepository extends EntityRepository
         return $this->createQueryBuilder('g')
         ->select('g')
         ->addSelect('t')
+        ->addSelect('j')
         ->join('g.type','t')
+        ->leftJoin('g.joueurs','j')
         ->orderBy('g.nom','ASC')
         ->getQuery()
         ->getResult();
