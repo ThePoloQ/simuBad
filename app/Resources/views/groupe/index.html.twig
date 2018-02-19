@@ -17,7 +17,7 @@
             <tr>
                 <td>{{ groupe.nom }}</td>
                 <td>{{ groupe.type.nom}} / {{ groupe.type.getNbJoueurs()}}J</td>
-                <td>{{ nbjoueurs[key].nb }}</td>
+                <td>{{ groupe.getJoueurs()|length }}</td>
                 <td>
                     <ul>
                         <li>
