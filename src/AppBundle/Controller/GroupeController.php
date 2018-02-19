@@ -99,7 +99,7 @@ class GroupeController extends Controller
           $this->doAffectation($groupes,$joueurs,"MX");
         }
 
-         $this->get('session')->getFlashBag()->add('success', "Groupes affectés");  
+         $this->get('session')->getFlashBag()->add('success', "Groupes affectés");
 
         return $this->redirectToRoute('joueur_index');
       }
@@ -117,11 +117,10 @@ class GroupeController extends Controller
       $iterator = $joueursObj->getIterator();
 
       foreach ($groupes as $groupe) {
-        $em->persist($groupe);
         $groupe->removeAllJoueurs();
+        $em->persist($groupe);
       }
-      $em->persist($groupe);
-
+      $em->flush();
       foreach ($groupes as $groupe) {
         $i=1;
         while ($i <= $groupe->getType()->getNbJoueurs()) {
