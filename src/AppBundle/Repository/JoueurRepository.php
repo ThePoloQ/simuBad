@@ -103,7 +103,7 @@ class JoueurRepository extends EntityRepository
 */
     public function findAll()
     {
-        return $this->findBy(array(),array("dateInscription"=>"DESC"));
+        return $this->findBy(array(),array("dateInscription"=>"DESC","club"=>"ASC","nom"=>"ASC"));
     }
 
 }
