@@ -69,6 +69,11 @@
             <a href="{{ path('joueur_edit', { 'id': joueur.id }) }}">Edit</a>
         </li>
         <li>
+            {{ form_start(cpph_form) }}
+                <input type="submit" value="MAJ CPPH">
+            {{ form_end(cpph_form) }}
+        </li>
+        <li>
             {{ form_start(delete_form) }}
                 <input type="submit" value="Delete">
             {{ form_end(delete_form) }}

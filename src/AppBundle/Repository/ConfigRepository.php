@@ -15,4 +15,8 @@ class ConfigRepository extends EntityRepository
   {
     return $this->findOneBy(array('key'=>'duree_match_s'));
   }
+  public function getDateCPPH()
+  {
+    return $this->findOneBy(array('key'=>'date_cpph'));
+  }
 }

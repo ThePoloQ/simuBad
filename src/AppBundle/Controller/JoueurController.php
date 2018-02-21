@@ -477,8 +477,16 @@ class JoueurController extends Controller
       foreach ($joueurs as $j) {
         $licences[] = sprintf("%'.08d", $j["licence"]);
       }
-      $sDate = $date->format('Y-m-d');
-      $url=$this->getParameter('ffbad_url').'?AuthJson={"Login":"'.$this->getParameter('ffbad_login').'","Password":"'.$this->getParameter('ffbad_password').'"}&QueryJson={"Function":"ws_getrankingallbyarrayoflicencedate","Param":{"Param1":'.json_encode($licences).',"Param2":"'.$sDate.'"}}';
+
+      $this->doMajCPPH($date,$licences);
+
+      $this->get('session')->getFlashBag()->add('success', "Mise à jour des moyennes effectuées");
+    }
+
+    private function doMajCPPH($objDate,$arrLicences){
+      $em = $this->getDoctrine()->getManager();
+      $sDate = $objDate->format('Y-m-d');
+      $url=$this->getParameter('ffbad_url').'?AuthJson={"Login":"'.$this->getParameter('ffbad_login').'","Password":"'.$this->getParameter('ffbad_password').'"}&QueryJson={"Function":"ws_getrankingallbyarrayoflicencedate","Param":{"Param1":'.json_encode($arrLicences).',"Param2":"'.$sDate.'"}}';
       $output=file_get_contents($url);
       $res = json_decode($output,true);
       //var_dump($res);die();
@@ -505,8 +513,7 @@ class JoueurController extends Controller
         ->getQuery()
         ->execute();
       }
-
-      $this->get('session')->getFlashBag()->add('success', "Mise à jour des moyennes effectuées");
+      $em->flush();
     }
 
     /**
@@ -546,6 +553,7 @@ class JoueurController extends Controller
     public function showAction(Joueur $joueur)
     {
         $deleteForm = $this->createDeleteForm($joueur);
+        $cpphForm = $this->createMajForm($joueur);
         $em = $this->getDoctrine()->getManager();
         $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
 
@@ -558,6 +566,7 @@ class JoueurController extends Controller
         return $this->render('joueur/show.html.twig', array(
             'joueur' => $joueur,
             'delete_form' => $deleteForm->createView(),
+            'cpph_form' => $cpphForm->createView(),
             'dateLimite' => $dateLimite,
         ));
     }
@@ -571,6 +580,7 @@ class JoueurController extends Controller
     public function editAction(Request $request, Joueur $joueur)
     {
         $deleteForm = $this->createDeleteForm($joueur);
+        $cpphForm = $this->createMajForm($joueur);
         $editForm = $this->createForm('AppBundle\Form\JoueurType', $joueur);
         $editForm->handleRequest($request);
 
@@ -611,6 +621,7 @@ class JoueurController extends Controller
             'joueur' => $joueur,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'cpph_form' => $cpphForm->createView(),
         ));
     }
 
@@ -653,6 +664,39 @@ class JoueurController extends Controller
     }
 
     /**
+     * Maj cpph a joueur entity.
+     *
+     * @Route("/{id}/cpph", name="joueur_cpph")
+     * @Method("POST")
+     */
+    public function cpphAction(Request $request, Joueur $joueur)
+    {
+        $form = $this->createMajForm($joueur);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $objDate = $em->getRepository('AppBundle:Config')->getDateCPPH();
+
+            if($objDate){
+              $date = \DateTime::createFromFormat('d/m/Y',$objDate->getValue());
+            }else{
+              $date= new \DateTime();
+            }
+
+            $licences = array();
+            $licences[] = sprintf("%'.08d", $joueur->getLicence());
+
+            $this->doMajCPPH($date,$licences);
+        }
+
+        $this->get('session')->getFlashBag()->add('success', "Mise à jour de la moyenne effectuée");
+
+        return $this->redirectToRoute('joueur_show', array('id' => $joueur->getId()));
+    }
+
+    /**
      * Creates a form to delete a joueur entity.
      *
      * @param Joueur $joueur The joueur entity
@@ -664,6 +708,22 @@ class JoueurController extends Controller
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('joueur_delete', array('id' => $joueur->getId())))
             ->setMethod('DELETE')
+            ->getForm()
+        ;
+    }
+
+    /**
+     * Creates a form to delete a joueur entity.
+     *
+     * @param Joueur $joueur The joueur entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createMajForm(Joueur $joueur)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('joueur_cpph', array('id' => $joueur->getId())))
+            ->setMethod('POST')
             ->getForm()
         ;
     }
