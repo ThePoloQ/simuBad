@@ -46,6 +46,31 @@ class JoueurController extends Controller
     /**
      * Lists all joueur entities.
      *
+     * @Route("/alpha", name="joueur_index_alpha")
+     * @Method("GET")
+     */
+    public function alphaAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $joueurs = $em->getRepository('AppBundle:Joueur')->findAllAlpha();
+        $objDateLim = $em->getRepository('AppBundle:Config')->getDateLimite();
+
+        if($objDateLim){
+          $dateLimite = \DateTime::createFromFormat('d/m/Y',$objDateLim->getValue());
+        }else{
+          $dateLimite = null;
+        }
+
+        return $this->render('joueur/index_alpha.html.twig', array(
+            'joueurs' => $joueurs,
+            'dateLimite' => $dateLimite,
+        ));
+    }
+
+    /**
+     * Lists all joueur entities.
+     *
      * @Route("/sh", name="joueur_sh")
      * @Method("GET")
      */

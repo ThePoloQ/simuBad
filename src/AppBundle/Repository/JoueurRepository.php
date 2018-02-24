@@ -95,12 +95,17 @@ class JoueurRepository extends EntityRepository
     public function findLaMX(){
       return $this->findBy(array("estMixte"=> true,"partenaireMX" => null),array("coteMixte"=>"DESC"));
     }
-/*
-    public function findSHGroupe()
+    public function findAllAlpha()
     {
-
+        return $this->createQueryBuilder('j')
+        ->select('j')
+        ->addSelect('g')
+        ->leftJoin('j.groupes','g')
+        ->orderBy('j.nom','ASC')
+        ->addOrderBy('j.dateInscription','DESC')
+        ->getQuery()
+        ->getResult();
     }
-*/
     public function findAll()
     {
         return $this->findBy(array(),array("dateInscription"=>"DESC","club"=>"ASC","nom"=>"ASC"));
