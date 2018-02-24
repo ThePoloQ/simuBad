@@ -108,7 +108,15 @@ class JoueurRepository extends EntityRepository
     }
     public function findAll()
     {
-        return $this->findBy(array(),array("dateInscription"=>"DESC","club"=>"ASC","nom"=>"ASC"));
+      return $this->createQueryBuilder('j')
+      ->select('j')
+      ->addSelect('g')
+      ->leftJoin('j.groupes','g')
+      ->orderBy('j.dateInscription','DESC')
+      ->addOrderBy('j.club','ASC')
+      ->addOrderBy('j.nom','ASC')
+      ->getQuery()
+      ->getResult();
     }
 
 }

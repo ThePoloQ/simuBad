@@ -37,7 +37,7 @@ class JoueurController extends Controller
           $dateLimite = null;
         }
 
-        return $this->render('joueur/index.html.twig', array(
+        return $this->render('joueur/index_alpha.html.twig', array(
             'joueurs' => $joueurs,
             'dateLimite' => $dateLimite,
         ));
