@@ -5,9 +5,10 @@
 {% block body %}
     <h1>Joueurs list</h1>
     <div>{{joueurs|length}} Joueurs</div>
-    <table class="table table-striped table-sm table-hover">
+    <table class="table table-striped table-sm table-hover datatables invisible">
         <thead>
             <tr>
+                <th></th>
                 <th></th>
                 <th>NOM Prénom</th>
                 <th>Moyenne {{ type }}</th>
@@ -21,7 +22,8 @@
         {% for key,joueur in joueurs %}
             <tr>
                 <td>{{ key+1 }}</td>
-                <td>{% if joueur.estLA == true %}<span class="badge badge-warning">LA</span>&nbsp;{% endif %}{{ joueur.nom }}</td>
+                <td>{% if joueur.estLA == true %}<span class="badge badge-warning">LA</span>&nbsp;{% endif %}</td>
+                <td>{{ joueur.nom }}</td>
                 <td>{% if type == "MX" %}{{ joueur.coteMixte }} ({{ joueur.classementMixte }}){% elseif type == "SH" or type == "SD" %}{{ joueur.coteSimple }} ({{ joueur.classementSimple }}){% else %}{{ joueur.coteDouble }} ({{ joueur.classementDouble }}){% endif %}</td>
                 <td>{{ joueur.licence }}</td>
                 <td>{% if joueur.getGroupe(type)|length > 0 %}{{ joueur.getGroupe(type).nom }}{% endif %}</td>
@@ -40,8 +42,6 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <div>{{joueurs|length}} Joueurs</div>
 
     <ul>
         <li>

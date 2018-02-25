@@ -25,7 +25,7 @@
                 <td>{% if salle.heurefin %}{{ salle.heurefin|date('H:i:s') }}{% endif %}</td>
                 <td>{% for groupe in salle.getGroupes %}{{ groupe.nom }}&nbsp;{% endfor %}</td>
                 <td>{{ salle.getMatchsProg }}</td>
-                <td>{{ salle.getCapaciteSecondes/duree_match }}</td>
+                <td>{{ (salle.getCapaciteSecondes/duree_match)|round(2, 'floor') }}</td>
                 <td>
                     <ul>
                         <li>
