@@ -65,13 +65,13 @@ class GroupeController extends Controller
           $groupes = $em->getRepository('AppBundle:Groupe')->findSH();
           $joueurs = $em->getRepository('AppBundle:Joueur')->findSH();
 
-          $this->doAffectation($groupes,$joueurs);
+          $this->doAffectation($groupes,$joueurs,"SH");
         }
         if ( \in_array("SD",$tableaux)){
           $groupes = $em->getRepository('AppBundle:Groupe')->findSD();
           $joueurs = $em->getRepository('AppBundle:Joueur')->findSD();
 
-          $this->doAffectation($groupes,$joueurs);
+          $this->doAffectation($groupes,$joueurs,"SD");
         }
         if ( \in_array("DH",$tableaux)){
           $groupes = $em->getRepository('AppBundle:Groupe')->findDH();
@@ -121,17 +121,25 @@ class GroupeController extends Controller
           $joueur=$iterator->current();
 
           switch ($tableau) {
+            case 'SH':
+            case 'SD':
+              $estLA = $joueur->getEstLA() || $joueur->getEstSimpleLA();
+              $part = null;
+              break;
             case 'DH':
               $joueur = $joueur[0];
               $part = $joueur->getPartenaireDH();
+              $estLA = ($joueur->getEstLA() || $joueur->getEstDoubleLA() || $part->getEstLA() || $part->getEstDoubleLA() );
               break;
             case 'DD':
               $joueur = $joueur[0];
               $part = $joueur->getPartenaireDD();
+              $estLA = ($joueur->getEstLA() || $joueur->getEstDoubleLA() || $part->getEstLA() || $part->getEstDoubleLA() );
               break;
             case 'MX':
               $joueur = $joueur[0];
               $part = $joueur->getPartenaireMX();
+              $estLA = ($joueur->getEstLA() || $joueur->getEstMixteLA() || $part->getEstLA() || $part->getEstMixteLA() );
               break;
             default:
               //do nothing
@@ -139,8 +147,7 @@ class GroupeController extends Controller
               break;
           }
 
-          if ( $joueur->getEstLA()
-            || ($part && $part->getEstLA())){
+          if ( $estLA ){
             $iterator->next();
             continue;
           }

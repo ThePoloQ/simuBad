@@ -35,6 +35,9 @@
             <tr>
                 <th>Groupes</th>
                 <td>
+                  {% if joueur.estSimpleLA == true %}Simple LA<BR/>{% endif %}
+                  {% if joueur.estDoubleLA == true %}Double LA<BR/>{% endif %}
+                  {% if joueur.estMixteLA == true %}Mixte LA<BR/>{% endif %}
                   {% for groupe in joueur.getGroupes() %}
                     {{groupe.nom}}&nbsp;
                   {% endfor %}
@@ -46,12 +49,12 @@
                 <th>Partenaires</th>
                 <td>
                 {% if joueur.estDouble == true %}
-                  {% if joueur.partenaireDH %}DH: <a href="{{ path('joueur_show', { 'id': joueur.partenaireDH.id }) }}">{{ joueur.partenaireDH }}</a> ({{ joueur.partenaireDH.classementDouble }}){% if joueur.partenaireDH.estLA == true %}&nbsp;<span class="badge badge-warning">LA</span>{% endif %}<BR/>{% endif %}
-                  {% if joueur.partenaireDD %}DD: <a href="{{ path('joueur_show', { 'id': joueur.partenaireDD.id }) }}">{{ joueur.partenaireDD }}</a> ({{ joueur.partenaireDD.classementDouble }}){% if joueur.partenaireDD.estLA == true %}&nbsp;<span class="badge badge-warning">LA</span>{% endif %}<BR/>{% endif %}
+                  {% if joueur.partenaireDH %}DH: <a href="{{ path('joueur_show', { 'id': joueur.partenaireDH.id }) }}">{{ joueur.partenaireDH }}</a> ({{ joueur.partenaireDH.classementDouble }}){% if joueur.partenaireDH.estLA == true or joueur.partenaireDH.estDoubleLA %}&nbsp;<span class="badge badge-warning">LA</span>{% endif %}<BR/>{% endif %}
+                  {% if joueur.partenaireDD %}DD: <a href="{{ path('joueur_show', { 'id': joueur.partenaireDD.id }) }}">{{ joueur.partenaireDD }}</a> ({{ joueur.partenaireDD.classementDouble }}){% if joueur.partenaireDD.estLA == true or joueur.partenaireDD.estDoubleLA == true %}&nbsp;<span class="badge badge-warning">LA</span>{% endif %}<BR/>{% endif %}
                   {% if not joueur.partenaireDH and not joueur.partenaireDD %}Double: Liste d'attente<br/>{% endif %}
                 {% endif %}
                 {% if joueur.estMixte == true %}
-                  {% if joueur.partenaireMX %}MX: <a href="{{ path('joueur_show', { 'id': joueur.partenaireMX.id }) }}">{{ joueur.partenaireMX }}</a> ({{ joueur.partenaireMX.classementMixte}}){% if joueur.partenaireMX.estLA == true %}&nbsp;<span class="badge badge-warning">LA</span>{% endif %}<BR/>{% endif %}
+                  {% if joueur.partenaireMX %}MX: <a href="{{ path('joueur_show', { 'id': joueur.partenaireMX.id }) }}">{{ joueur.partenaireMX }}</a> ({{ joueur.partenaireMX.classementMixte}}){% if joueur.partenaireMX.estLA == true or joueur.partenaireMX.estMixteLA %}&nbsp;<span class="badge badge-warning">LA</span>{% endif %}<BR/>{% endif %}
                   {% if not joueur.partenaireMX %}Mixte: Liste d'attente<br/>{% endif %}
                 {% endif %}
                 </td>

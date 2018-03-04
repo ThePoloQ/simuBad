@@ -54,6 +54,11 @@ class Joueur
   private $estSimple;
 
   /**
+   * @ORM\Column(type="boolean", nullable=true)
+   */
+  private $estSimpleLA;
+
+  /**
    * @ORM\Column(type="string", length=3, nullable=true)
    */
   private $classementSimple;
@@ -64,6 +69,11 @@ class Joueur
   private $estDouble;
 
   /**
+   * @ORM\Column(type="boolean", nullable=true)
+   */
+  private $estDoubleLA;
+
+  /**
    * @ORM\Column(type="string", length=3, nullable=true)
    */
   private $classementDouble;
@@ -72,6 +82,12 @@ class Joueur
    * @ORM\Column(type="boolean", nullable=true)
    */
   private $estMixte;
+
+  /**
+   * @ORM\Column(type="boolean", nullable=true)
+   */
+  private $estMixteLA;
+
 
   /**
    * @ORM\Column(type="string", length=3, nullable=true)
@@ -246,7 +262,7 @@ class Joueur
   public function getGroupes(){
     return $this->groupes;
   }
-  
+
 
   public function removeGroupe($groupe){
     if (!$this->groupes->contains($groupe)){
@@ -358,6 +374,30 @@ class Joueur
 
 	public function setEstLA($bool){
 		$this->estLA = $bool;
+	}
+
+  public function getEstSimpleLA(){
+		return $this->estSimpleLA;
+	}
+
+	public function setEstSimpleLA($bool){
+		$this->estSimpleLA = $bool;
+	}
+
+  public function getEstDoubleLA(){
+		return $this->estDoubleLA;
+	}
+
+	public function setEstDoubleLA($bool){
+		$this->estDoubleLA = $bool;
+	}
+
+  public function getEstMixteLA(){
+		return $this->estMixteLA;
+	}
+
+	public function setEstMixteLA($bool){
+		$this->estMixteLA = $bool;
 	}
 
   public function getClassementMixte(){

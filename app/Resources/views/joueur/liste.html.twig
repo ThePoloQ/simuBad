@@ -22,7 +22,7 @@
         {% for key,joueur in joueurs %}
             <tr>
                 <td>{{ key+1 }}</td>
-                <td>{% if joueur.estLA == true %}<span class="badge badge-warning">LA</span>&nbsp;{% endif %}</td>
+                <td>{% if joueur.estLA == true or ((type == "SH" or type == "SD") and joueur.estSimpleLA == true ) %}<span class="badge badge-warning">LA</span>&nbsp;{% endif %}</td>
                 <td>{{ joueur.nom }}</td>
                 <td>{% if type == "MX" %}{{ joueur.coteMixte }} ({{ joueur.classementMixte }}){% elseif type == "SH" or type == "SD" %}{{ joueur.coteSimple }} ({{ joueur.classementSimple }}){% else %}{{ joueur.coteDouble }} ({{ joueur.classementDouble }}){% endif %}</td>
                 <td>{{ joueur.licence }}</td>

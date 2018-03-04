@@ -343,11 +343,19 @@ class JoueurController extends Controller
               $joueur->setSexe($valeurs[2]);
               $joueur->setDateInscription(\DateTime::createFromFormat($dateFormat, $valeurs[3]));
 
-              if($valeurs[4]!="")
+              if($valeurs[4]!=""){
                 $joueur->setEstSimple(true);
+                if(strcmp($valeurs[4],"LA") == 0){
+                  $joueur->setEstSimpleLA(true);
+                }
+              }
+
 
               if($valeurs[5]!=""){
                 $joueur->setEstDouble(true);
+                if(strcmp($valeurs[5],"LA") == 0){
+                  $joueur->setEstDoubleLA(true);
+                }
                 if($valeurs[7]!=""){
                   $part = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => \intval($valeurs[7])));
                   if($part && $valeurs[2] == "M"){
@@ -365,6 +373,9 @@ class JoueurController extends Controller
               }
               if($valeurs[8]!=""){
                 $joueur->setEstMixte(true);
+                if(strcmp($valeurs[8],"LA") == 0){
+                  $joueur->setEstMixteLA(true);
+                }
                 if($valeurs[10]!=""){
                   $part = $em->getRepository('AppBundle:Joueur')->findOneBy(array("licence" => \intval($valeurs[10])));
                   if($part){
