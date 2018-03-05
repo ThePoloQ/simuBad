@@ -132,6 +132,7 @@ class DefaultController extends Controller
         ->addSelect("j.club as club")
         ->groupBy("j.club")
         ->orderBy('nb','ASC')
+        ->having('nb > 4')
         ->getQuery();
 
         $res2 = $q2->getResult();
